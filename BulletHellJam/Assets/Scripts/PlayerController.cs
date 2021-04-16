@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
-	private Rigidbody2D rigidBodyRef;
+	private Rigidbody rigidBodyRef;
 
 	private Vector2 rawInputMovement;
 	private float playerSpeed = 10f;
 
 	private void Awake() {
-		rigidBodyRef = gameObject.GetComponent<Rigidbody2D>();
+		rigidBodyRef = gameObject.GetComponent<Rigidbody>();
 	}
 
 	private void FixedUpdate() {
