@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour {
 	private Rigidbody rigidBodyRef;
+	[SerializeField] private Animator animRef;
 
 	private Vector2 rawInputMovement;
 	private float playerSpeed = 10f;
