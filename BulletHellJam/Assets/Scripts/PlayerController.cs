@@ -8,57 +8,39 @@ public class PlayerController : MonoBehaviour {
 	private Vector2 rawInputMovement;
 	private float playerSpeed = 10f;
 
+	private float maxSpeed = 10f;
+	private float slowdownDuration = 0.5f;
+	private float slowdownTimeElapsed = 0f;
+
 	private float LeftCamBound, RightCamBound, LeftWorldBound, RightWorldBound;
 	private float BottomCamBound, TopCamBound, BottomWorldBound, TopWorldBound;
 
 	private void Awake() {
 		rigidBodyRef = gameObject.GetComponent<Rigidbody>();
-
-		ComputeWorldBounds();
 	}
 
-	private void ComputeWorldBounds() {
-		Bounds bounds = gameObject.transform.Find("PlayerMesh/pHairMirr").GetComponent<SkinnedMeshRenderer>().bounds;
+	private void FixedUpdate() {
+		Vector3 inputMovement = rawInputMovement.normalized * playerSpeed;
 
-		LeftWorldBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).x;
-		RightWorldBound = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0f, 0f)).x;
+		print(inputMovement);
 
-		LeftWorldBound += bounds.extents.x;
-		RightWorldBound -= bounds.extents.x;
+		rigidBodyRef.AddForce(inputMovement);
 
-		LeftCamBound = Camera.main.WorldToViewportPoint(new Vector3(LeftWorldBound, 0f, 0f)).x;
-		RightCamBound = Camera.main.WorldToViewportPoint(new Vector3(RightWorldBound, 0f, 0f)).x;
+		if(rigidBodyRef.velocity.magnitude > maxSpeed){
+             rigidBodyRef.velocity = Vector3.ClampMagnitude(rigidBodyRef.velocity, maxSpeed);
+        }
 
-		BottomWorldBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
-		TopWorldBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0f)).y;
-
-		//BottomWorldBound += bounds.extents.y;
-		TopWorldBound -= 3.7f * bounds.extents.y;
-
-		BottomCamBound = Camera.main.WorldToViewportPoint(new Vector3(0f, BottomWorldBound, 0f)).y;
-		TopCamBound = Camera.main.WorldToViewportPoint(new Vector3(0f, TopWorldBound, 0f)).y;
-
-	}
-
-	private void Update() {
-		Vector3 inputMovement = rawInputMovement.normalized * playerSpeed * Time.deltaTime;
-		Vector3 new_pos = rigidBodyRef.transform.position + inputMovement;
-
-		Vector3 pos = Camera.main.WorldToViewportPoint(new_pos);
-
-		if(pos.x < LeftCamBound) {
-			new_pos.x = LeftWorldBound;
-		} else if(pos.x > RightCamBound) {
-			new_pos.x = RightWorldBound;
-		}
-		
-		if(pos.y < BottomCamBound) {
-			new_pos.y = BottomWorldBound;
-		} else if(pos.y > TopCamBound) {
-			new_pos.y = TopWorldBound;
+		if (inputMovement == Vector3.zero && slowdownTimeElapsed < slowdownDuration) {
+			rigidBodyRef.velocity = Vector3.Lerp(rigidBodyRef.velocity, Vector3.zero, slowdownTimeElapsed / slowdownDuration);
+			slowdownTimeElapsed += Time.fixedDeltaTime;
+		} else {
+			slowdownTimeElapsed = 0f;
 		}
 
-		rigidBodyRef.MovePosition(new_pos);
+		animRef.SetFloat("VelocityX", rigidBodyRef.velocity.x);
+		animRef.SetFloat("VelocityY", rigidBodyRef.velocity.y);
+
+		//print(rigidBodyRef.velocity);
 	}
 
 	public void OnMovement(InputAction.CallbackContext value) {
