@@ -1,7 +1,12 @@
 using UnityEngine;
 
 public class BatController : MonoBehaviour {
+    // state
     public enum BatState { ENTERING, FIGHTING };
+    BatState state = BatState.ENTERING;
+
+    // stats
+    float health = 100;
 
     // timers
     private float newPathTimeMin = 0.2f, newPathTimeMax = 1.5f, newPathTime = 0f;
@@ -16,8 +21,6 @@ public class BatController : MonoBehaviour {
     private Rigidbody rigidbodyRef;
     private Vector3 targetPos;
     private float batSpeed = 5f;
-
-    BatState state = BatState.ENTERING;
 
     private void Awake() {
         rigidbodyRef = GetComponent<Rigidbody>();
@@ -59,8 +62,6 @@ public class BatController : MonoBehaviour {
 
         if (state != BatState.FIGHTING) return;
 
-        attackTimer += Time.fixedDeltaTime;
-
         // every y seconds use one of two different basic attacks
         if (attackTimer > attackTime) {
             // atk1 - fire three projectiles at player
@@ -70,6 +71,19 @@ public class BatController : MonoBehaviour {
 
             attackTimer = 0f;
             attackTime = Random.Range(attackTimeMin, attackTimeMax);
+        } attackTimer += Time.fixedDeltaTime;
+    }
+
+    public void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("PlayerBullet")) {
+            other.gameObject.GetComponent<PlayerBulletManager>().Destroy();
+
+            health -= 15f;
+
+            if (health <= 0f) {
+
+                Destroy(gameObject);
+            }
         }
     }
 }
