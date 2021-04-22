@@ -44,6 +44,9 @@ public class BossController : MonoBehaviour {
     private float attack2DurationTime = 3f; private float attack2DurationTimer = 0f;
 	private float attack1Prob = 0.7f;
 
+	private float attack1Rate = 0.5f;
+	private float attack2Rate = 0.5f;
+
     // bullets
 	[SerializeField] private GameObject bulletPrefab;
     private GameObject playerRef;
@@ -144,11 +147,11 @@ public class BossController : MonoBehaviour {
 
 			if (attackTimer > attackTime) {
 				if (rigidBodyRef.position.x < RightMoveBound) {
-					if (state == BossState.STAGE1) Attack1();
-					else if (state == BossState.STAGE2) Attack2();
+					if (state == BossState.STAGE1) StartCoroutine(Attack1());
+					else if (state == BossState.STAGE2) StartCoroutine(Attack2());
 					else if (state == BossState.STAGE3) {
-						if (Random.Range(0f, 1f) > attack1Prob) StartAttack1();
-						else StartAttack2();
+						if (Random.Range(0f, 1f) > attack1Prob) StartCoroutine(Attack1());
+						else StartCoroutine(Attack2());
 					}
 				}
 
@@ -183,40 +186,6 @@ public class BossController : MonoBehaviour {
 
 			return;
         }
-
-		if (state == BossState.ATTACK1) {
-			attack1DurationTimer += Time.fixedDeltaTime;
-
-			rigidBodyRef.velocity = Vector3.zero;
-
-			// perform attack pattern
-			StartCoroutine(Attack1());
-			
-			if (attack1DurationTimer > attack1DurationTime) {
-		    	state = oldState;
-
-				attack1DurationTimer = 0f;
-		    }
-
-			return;
-		}
-
-		if (state == BossState.ATTACK2) {
-			attack2DurationTimer += Time.fixedDeltaTime;
-
-			rigidBodyRef.velocity = Vector3.zero;
-
-			// perform attack pattern
-			// print("attack2");
-			
-			if (attack2DurationTimer > attack2DurationTime) {
-		    	state = oldState;
-
-				attack2DurationTimer = 0f;
-		    }
-
-			return;
-		}
 	}
 
 	private void RandomizeTargetPosition() {
@@ -243,47 +212,27 @@ public class BossController : MonoBehaviour {
 		}
 	}
 
-	private void StartAttack1() {
-		oldState = state;
-		state = BossState.ATTACK1;
-	}
-
     private IEnumerator Attack1() {
-		// do attack stuff, like run a coroutine or something
         for (int j=0; j<6; j++) {
 			for (int i=0; i<attack1BulletSpawners.Length; i++) {
 				if (attack1BulletSpawners[i].activeSelf) {
                     if (playerRef != null)
-					    BatBulletManager.Create(attack1BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
+					    BossBulletManager.Create(attack1BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
                 }
-            } yield return new WaitForSeconds(attack1DurationTime); 
-        }
-
-		state = oldState;
-		
-		yield return null;
-	}
-
-	private void StartAttack2() {
-		oldState = state;
-		state = BossState.ATTACK2;
-	}
+            } yield return new WaitForSeconds(attack1Rate); 
+        } yield return null;
+    }
 
     private IEnumerator Attack2() {
-		// do attack stuff, like run a coroutine or something
         for (int j=0; j<6; j++) {
 			for (int i=0; i<attack2BulletSpawners.Length; i++) {
 				if (attack2BulletSpawners[i].activeSelf) {
                     if (playerRef != null)
-					    BatBulletManager.Create(attack2BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
+					    BossBulletManager.Create(attack2BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
                 }
-            } yield return new WaitForSeconds(attack2DurationTime); 
-        }
-
-		state = oldState;
-		
-		yield return null;
-	}
+            } yield return new WaitForSeconds(attack2Rate); 
+        } yield return null;
+    }
 
 	public BossState GetState() { return state; }
 
