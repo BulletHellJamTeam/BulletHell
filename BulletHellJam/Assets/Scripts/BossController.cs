@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class BossController : MonoBehaviour {
@@ -5,6 +6,7 @@ public class BossController : MonoBehaviour {
     public enum BossState { 
 		IDLE, DEAD,
 		STAGE1, STAGE2, STAGE3, 
+		ATTACK1, ATTACK2,
 		DASHING, RETREATING
 	};
 
@@ -19,11 +21,18 @@ public class BossController : MonoBehaviour {
 	[SerializeField] private Transform idlePosition;
 	private Rigidbody rigidBodyRef;
 
-	// timers
+	// movement timers
     private float horzTimeMin = 0.5f, horzTimeMax = 3f, horzTime = 0f;
     private float horzTimer = 0f;
     private float vertTimeMin = 2.5f, vertTimeMax = 4f, vertTime = 3f;
     private float vertTimer = 0f;
+
+	// attack timers
+    private float attackTimeMin = 3.5f, attackTimeMax = 6.5f, attackTime = 5f;
+    private float attackTimer = 0f;
+    private float attack1DurationTime = 2f; private float attack1DurationTimer = 0f;
+    private float attack2DurationTime = 3f; private float attack2DurationTimer = 0f;
+	private float attack1Prob = 0.7f;
 
 	// boundaries
 	float LeftMoveBound, RightMoveBound;
@@ -60,18 +69,18 @@ public class BossController : MonoBehaviour {
 	private void FixedUpdate() {
 		if (state == BossState.IDLE || state == BossState.DEAD) return; // if idle or dead, do nothing
 
+		print(state);
+
 		if (state == BossState.RETREATING) {
 			rigidBodyRef.velocity = Vector3.zero;
 			rigidBodyRef.MovePosition(idlePosition.position);
 
 			state = BossState.IDLE;
 
-			return; 
+			return;
 		}
 
 		if (state == BossState.STAGE1 || state == BossState.STAGE2 || state == BossState.STAGE3) {
-			if (state == BossState.DASHING) return;
-
 			Vector3 rawMovement = new Vector3(targetXPos - rigidBodyRef.transform.position.x, 0f, 0f);
 			Vector3 movement = rawMovement.normalized * bossSpeed;
 
@@ -111,11 +120,30 @@ public class BossController : MonoBehaviour {
     			vertTimer = 0f;
     			vertTime = Random.Range(vertTimeMin, vertTimeMax);
     		} vertTimer += Time.fixedDeltaTime;
+
+			if (attackTimer > attackTime) {
+				if (rigidBodyRef.position.x < RightMoveBound) {
+					if (state == BossState.STAGE1) Attack1();
+					else if (state == BossState.STAGE2) Attack2();
+					else if (state == BossState.STAGE3) {
+						if (Random.Range(0f, 1f) > attack1Prob) Attack1();
+						else Attack2();
+					}
+				}
+
+    			attackTimer = 0f;
+    			attackTime = Random.Range(attackTimeMin, attackTimeMax);
+    		} attackTimer += Time.fixedDeltaTime;
+
+			return;
         }
 
-		if (state == BossState.DASHING) {
-			horzTimer += Time.fixedDeltaTime;
+		if (state == BossState.DASHING || state == BossState.ATTACK1 || state == BossState.ATTACK2) {
+    		animRef.SetFloat("VelocityX", rigidBodyRef.velocity.x);
+    		animRef.SetFloat("VelocityY", rigidBodyRef.velocity.y);
+		}
 
+		if (state == BossState.DASHING) {
 			dashTimer += Time.fixedDeltaTime;
 			dashEchoTimer += Time.fixedDeltaTime;
 
@@ -131,7 +159,43 @@ public class BossController : MonoBehaviour {
 
 		    	state = oldState;
 		    }
+
+			return;
         }
+
+		if (state == BossState.ATTACK1) {
+			attack1DurationTimer += Time.fixedDeltaTime;
+
+			rigidBodyRef.velocity = Vector3.zero;
+
+			// perform attack pattern
+			// print("attack1");
+			
+			if (attack1DurationTimer > attack1DurationTime) {
+		    	state = oldState;
+
+				attack1DurationTimer = 0f;
+		    }
+
+			return;
+		}
+
+		if (state == BossState.ATTACK2) {
+			attack2DurationTimer += Time.fixedDeltaTime;
+
+			rigidBodyRef.velocity = Vector3.zero;
+
+			// perform attack pattern
+			// print("attack2");
+			
+			if (attack2DurationTimer > attack2DurationTime) {
+		    	state = oldState;
+
+				attack2DurationTimer = 0f;
+		    }
+
+			return;
+		}
 	}
 
 	private void RandomizeTargetPosition() {
@@ -158,6 +222,20 @@ public class BossController : MonoBehaviour {
 		}
 	}
 
+	private void Attack1() {
+		oldState = state;
+		state = BossState.ATTACK1;
+
+		// do attack stuff, like run a coroutine or something
+	}
+
+	private void Attack2() {
+		oldState = state;
+		state = BossState.ATTACK2;
+
+		// do attack stuff, like run a coroutine or something
+	}
+
 	public BossState GetState() { return state; }
 
 	public void Enter(int stage) {
@@ -177,15 +255,15 @@ public class BossController : MonoBehaviour {
         if (other.gameObject.CompareTag("PlayerBullet")) {
 			PlayerBulletManager pbm = other.gameObject.GetComponent<PlayerBulletManager>();
 
-			if (state == BossState.STAGE1) { 
+			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) { 
 				health1 -= pbm.GetDamage();
 
 				if (health1 < 0f) state = BossState.RETREATING;
-			} else if (state == BossState.STAGE2) { 
+			} else if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { 
 				health2 -= pbm.GetDamage();
 
 				if (health2 < 0f) state = BossState.RETREATING;
-			} else if (state == BossState.STAGE3) {
+			} else if (state == BossState.STAGE3 || oldState == BossState.STAGE3) {
 				health3 -= pbm.GetDamage();
 
 				if (health3 < 0f) {

@@ -108,7 +108,9 @@ public class EnemySpawner : MonoBehaviour {
     private IEnumerator SpawnBatSummons(Wave wave) {
         while (bossController.GetState() == BossController.BossState.STAGE1 
             || bossController.GetState() == BossController.BossState.STAGE2
-            || bossController.GetState() == BossController.BossState.STAGE3) {
+            || bossController.GetState() == BossController.BossState.STAGE3
+            || bossController.GetState() == BossController.BossState.ATTACK1
+            || bossController.GetState() == BossController.BossState.ATTACK2) {
        
             SpawnEnemy(batPrefab.transform);
             yield return new WaitForSeconds(1f / wave.batRate);
@@ -120,7 +122,9 @@ public class EnemySpawner : MonoBehaviour {
     private IEnumerator SpawnPowerBatSummons(Wave wave) {
         while (bossController.GetState() == BossController.BossState.STAGE1 
             || bossController.GetState() == BossController.BossState.STAGE2
-            || bossController.GetState() == BossController.BossState.STAGE3) {
+            || bossController.GetState() == BossController.BossState.STAGE3
+            || bossController.GetState() == BossController.BossState.ATTACK1
+            || bossController.GetState() == BossController.BossState.ATTACK2) {
        
             SpawnEnemy(powerBatPrefab.transform);
             yield return new WaitForSeconds(1f / wave.powerBatRate);
