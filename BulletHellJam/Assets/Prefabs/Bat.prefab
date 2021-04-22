@@ -47,6 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosion: {fileID: 5824320942706098987, guid: 1314fafe14808ca429c4adc581c10d60, type: 3}
+  damageMaterial: {fileID: 2100000, guid: 73880f0e7d9c84048aa643ba126769ad, type: 2}
+  body: {fileID: 1641355239003426353}
+  wings: {fileID: 3817139249580920185}
 --- !u!65 &4669177882173289599
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -332,5 +335,15 @@ GameObject:
 --- !u!4 &5136067263967879308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0c8dc1128bdb4f0409f539d9670d3d44, type: 3}
+  m_PrefabInstance: {fileID: 4669177881936267111}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1641355239003426353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3023318948114691754, guid: 0c8dc1128bdb4f0409f539d9670d3d44, type: 3}
+  m_PrefabInstance: {fileID: 4669177881936267111}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3817139249580920185 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8373725972420413982, guid: 0c8dc1128bdb4f0409f539d9670d3d44, type: 3}
   m_PrefabInstance: {fileID: 4669177881936267111}
   m_PrefabAsset: {fileID: 0}

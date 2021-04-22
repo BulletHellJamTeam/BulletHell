@@ -22,12 +22,18 @@ public class PowerBatController : MonoBehaviour {
     private Vector3 targetPos;
     private float batSpeed = 5f;
 
-    // particles
+    // visuals
     [SerializeField] private GameObject explosion;
+    [SerializeField] private Material damageMaterial;
+    [SerializeField] private GameObject body;
+    [SerializeField] private GameObject wings;
+    private Material originalMaterial;
 
     private void Awake() {
         rigidbodyRef = GetComponent<Rigidbody>();
         targetPos = rigidbodyRef.transform.position;
+
+        originalMaterial = body.GetComponent<SkinnedMeshRenderer>().material;
     }
 
     private void Start() {
@@ -87,8 +93,18 @@ public class PowerBatController : MonoBehaviour {
 
             if (health <= 0f) {
                 SelfDestruct();
+            } else {
+                body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+                wings.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+                Invoke("ResetMaterial", 0.2f);
             }
         }
+    }
+
+    private void ResetMaterial() {
+        body.GetComponent<SkinnedMeshRenderer>().material = originalMaterial;
+        wings.GetComponent<SkinnedMeshRenderer>().material = originalMaterial;
     }
 
     public void SelfDestruct() {
