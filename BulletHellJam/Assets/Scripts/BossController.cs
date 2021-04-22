@@ -58,7 +58,8 @@ public class BossController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (state == BossState.IDLE) return; // if idle, do nothing
+		print(state);
+		if (state == BossState.IDLE || state == BossState.DEAD) return; // if idle, do nothing
 
 		if (state == BossState.RETREATING) {
 			rigidBodyRef.velocity = Vector3.zero;
@@ -106,7 +107,7 @@ public class BossController : MonoBehaviour {
     		} horzTimer += Time.fixedDeltaTime;
 		
 			if (vertTimer > vertTime) {
-				Dash();
+				if (rigidBodyRef.position.x < RightMoveBound) Dash();
 
     			vertTimer = 0f;
     			vertTime = Random.Range(vertTimeMin, vertTimeMax);
@@ -179,9 +180,11 @@ public class BossController : MonoBehaviour {
 
 			float health = 0f;
 
-			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) { health1 -= pbm.GetDamage(); health = health1; }
-			if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { health2 -= pbm.GetDamage(); health = health2; }
-			if (state == BossState.STAGE3 || oldState == BossState.STAGE3) { health3 -= pbm.GetDamage(); health = health3; }
+			if (state == BossState.STAGE1) { health1 -= pbm.GetDamage(); health = health1; }
+			if (state == BossState.STAGE2) { health2 -= pbm.GetDamage(); health = health2; }
+			if (state == BossState.STAGE3) { health3 -= pbm.GetDamage(); health = health3; }
+
+			print(health3);
 
 			if (health3 < 0f) {
 				state = BossState.DEAD;
