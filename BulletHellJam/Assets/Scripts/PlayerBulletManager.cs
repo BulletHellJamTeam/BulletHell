@@ -22,8 +22,9 @@ public class PlayerBulletManager : MonoBehaviour {
     public void Destroy() {
         gameObject.SetActive(false);
 
-        Instantiate(explosion, transform.position, Quaternion.identity);
+        GameObject expl = Instantiate(explosion, transform.position, Quaternion.identity);
 
+        Destroy(expl, 0.2f);
         Destroy(gameObject, 0.2f);
     }
     public void Destroy(float timeTilDeath) {

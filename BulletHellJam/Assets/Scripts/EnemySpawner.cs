@@ -13,18 +13,15 @@ public class EnemySpawner : MonoBehaviour {
         public float rate;
     }
 
+    [SerializeField] private TMPro.TextMeshProUGUI waveText;
+
     public Wave[] waves;
     public Transform[] spawnPoints;
 
     private int nextWave = 0;
-    private float timeBetweenWaves = 2.5f;
-    private float waveCountdown;
+    private float waveTime = 2.5f, waveTimer = 2.5f;
     private SpawnState state = SpawnState.COUNTING;
     private float searchCountdown = 1f;
-
-    private void Start() {
-        waveCountdown = timeBetweenWaves;
-    }
 
     private void Update() {
         if (state == SpawnState.GAME_OVER) return;
@@ -37,17 +34,19 @@ public class EnemySpawner : MonoBehaviour {
             }
         }
 
-        if (waveCountdown <= 0) {
+        if (waveTimer > waveTime) {
             if (state != SpawnState.SPAWNING) {
                 StartCoroutine(SpawnWave(waves[nextWave]));
             }
-        } else {
-            waveCountdown -= Time.deltaTime;
         }
+
+        waveTimer += Time.deltaTime;
     }
 
     private IEnumerator SpawnWave(Wave wave) {
         state = SpawnState.SPAWNING;
+
+        waveText.text = wave.name;
 
         for (int i=0; i<wave.count; i++) {
             SpawnEnemy(wave.enemy);
@@ -69,13 +68,14 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void WaveCompleted() {
+        print("wave completed");
+
         state = SpawnState.COUNTING;
-        waveCountdown = timeBetweenWaves;
+        waveTimer = 0f;
 
         nextWave++;
 
-        if (nextWave >= waves.Length)
-        {
+        if (nextWave >= waves.Length) {
             state = SpawnState.GAME_OVER;
         }
     }
