@@ -45,8 +45,6 @@ public class BossController : MonoBehaviour {
 		Vector3 rawMovement = targetPos - rigidBodyRef.transform.position;
 		Vector3 movement = rawMovement.normalized * bossSpeed;
 
-		//print(rigidBodyRef.transform.position + " - " + targetPos);
-
 		if (rawMovement.magnitude > min_dist && !slowingDown) { 
 			if (!recalculatingPos) rigidBodyRef.AddForce(movement);
 		} else {
@@ -61,7 +59,6 @@ public class BossController : MonoBehaviour {
 		}
 
 		if (recalculatingPos) rigidBodyRef.velocity = Vector3.zero;
-		print(rigidBodyRef.velocity);
 
 		if(rigidBodyRef.velocity.magnitude > maxSpeed){
              rigidBodyRef.velocity = Vector3.ClampMagnitude(rigidBodyRef.velocity, maxSpeed);

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rigidBodyRef;
 
 	private Vector2 rawInputMovement;
+	private Vector2 rawMousePosition;
 	private float playerSpeed = 10f;
 
 	private float maxSpeed = 10f;
@@ -38,5 +39,18 @@ public class PlayerController : MonoBehaviour {
 
 	public void OnMovement(InputAction.CallbackContext value) {
 		rawInputMovement = value.ReadValue<Vector2>();
+	}
+
+	public void OnMouse(InputAction.CallbackContext value) {
+		rawMousePosition = value.ReadValue<Vector2>();
+	}
+
+	public void OnLeftClick(InputAction.CallbackContext value) {
+	}
+
+	public void OnRightClick(InputAction.CallbackContext value) {
+	}
+
+	public void OnDash(InputAction.CallbackContext value) {
 	}
 }
