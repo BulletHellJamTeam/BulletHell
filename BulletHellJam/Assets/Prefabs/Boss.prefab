@@ -186,6 +186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animRef: {fileID: 8183329895903831126}
+  idlePosition: {fileID: 0}
+  explosion: {fileID: 5824320942706098987, guid: 1314fafe14808ca429c4adc581c10d60, type: 3}
   echoPrefab: {fileID: 5824320942706098987, guid: 062215ec69750364880fc673f01b5a02, type: 3}
 --- !u!54 &8183329895580476434
 Rigidbody:

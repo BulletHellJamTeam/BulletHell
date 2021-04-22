@@ -19,6 +19,7 @@ public class BossController : MonoBehaviour {
 	// references
 	[SerializeField] private Animator animRef;
 	[SerializeField] private Transform idlePosition;
+	[SerializeField] private GameObject explosion;
 	private Rigidbody rigidBodyRef;
 
 	// movement timers
@@ -258,22 +259,36 @@ public class BossController : MonoBehaviour {
 			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) { 
 				health1 -= pbm.GetDamage();
 
-				if (health1 < 0f) state = BossState.RETREATING;
+				if (health1 < 0f) {
+					state = BossState.RETREATING;
+
+					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
+					Destroy(exp, 0.5f);
+				}
 			} else if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { 
 				health2 -= pbm.GetDamage();
 
-				if (health2 < 0f) state = BossState.RETREATING;
+				if (health2 < 0f) {
+					state = BossState.RETREATING;
+
+					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
+					Destroy(exp, 0.5f);
+				}
 			} else if (state == BossState.STAGE3 || oldState == BossState.STAGE3) {
 				health3 -= pbm.GetDamage();
 
 				if (health3 < 0f) {
 					state = BossState.DEAD;
 					gameObject.SetActive(false);
+
+					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
+					Destroy(exp, 0.5f);
 				}
 
 			} else { return; } // dont take damage unless we're in a stage!
 
-            pbm.Destroy();
-        }
+
+		    pbm.Destroy();
+		}
     }
 }

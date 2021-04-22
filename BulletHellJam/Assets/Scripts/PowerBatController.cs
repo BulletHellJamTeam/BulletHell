@@ -22,6 +22,9 @@ public class PowerBatController : MonoBehaviour {
     private Vector3 targetPos;
     private float batSpeed = 5f;
 
+    // particles
+    [SerializeField] private GameObject explosion;
+
     private void Awake() {
         rigidbodyRef = GetComponent<Rigidbody>();
         targetPos = rigidbodyRef.transform.position;
@@ -89,6 +92,11 @@ public class PowerBatController : MonoBehaviour {
     }
 
     public void SelfDestruct() {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+
+        GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
+
+        Destroy(exp, 0.5f);
+        Destroy(gameObject, 0.5f);
     }
 }
