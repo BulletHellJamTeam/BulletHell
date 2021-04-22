@@ -6,8 +6,10 @@ public class BossController : MonoBehaviour {
 
     public enum BossState { IDLE, ATTACKING, MOVING };
 
-	float time;
-	float updateTime = 5f;
+	//private float horzTimer, horzTime;
+
+	private float horzTimer = 0f, horzTime = 3f;
+	private float vertTimer = 0f, vertTime = 5f;
 
 	Vector3 targetPos;
 
@@ -28,17 +30,15 @@ public class BossController : MonoBehaviour {
 	}
 
 	private void Start() {
-		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.55f, 0f, 0f)).x;
-		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0f, 0f)).x;
+		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.35f, 0f, 0f)).x;
+		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.9f, 0f, 0f)).x;
 
-		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.55f, 0f)).y;
+		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
 		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0f)).y;
 
-		min_dist = (RightMoveBound - LeftMoveBound) / 10f;
+		min_dist = (RightMoveBound - LeftMoveBound) / 7f;
 
 		RandomizeTargetPosition();
-
-		time = 0;
 	}
 
 	private void FixedUpdate() {
@@ -67,14 +67,14 @@ public class BossController : MonoBehaviour {
 		animRef.SetFloat("VelocityX", rigidBodyRef.velocity.x);
 		animRef.SetFloat("VelocityY", rigidBodyRef.velocity.y);
 
-		if (time > updateTime) {
+		if (horzTimer > horzTime) {
 			slowingDown = false;
 			RandomizeTargetPosition();
 
-			time = 0f;
+			horzTimer = 0f;
 		}
 
-		time += Time.fixedDeltaTime;
+		horzTimer += Time.fixedDeltaTime;
 	}
 
 	private void RandomizeTargetPosition() {
