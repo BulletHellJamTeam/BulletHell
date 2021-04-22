@@ -83,8 +83,6 @@ public class BossController : MonoBehaviour {
 		recalculatingPos = true;
 
 		while ((targetPos-rigidBodyRef.transform.position).magnitude < min_dist) {
-		 	print((targetPos - rigidBodyRef.transform.position).magnitude);
-
 		 	targetPos = new Vector3(Random.Range(LeftMoveBound, RightMoveBound), targetPos.y, targetPos.z);
 		} 
 

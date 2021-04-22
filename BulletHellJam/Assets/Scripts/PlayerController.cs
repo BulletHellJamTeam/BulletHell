@@ -3,9 +3,10 @@ using UnityEngine.InputSystem;
 using EZCameraShake;
 using TMPro;
 using System.Collections;
+using UnityEditorInternal;
 
 public class PlayerController : MonoBehaviour {
-    public enum PlayerState { MOVING, DASHING };
+    public enum PlayerState { MOVING, DASHING, MELEE };
 
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
@@ -89,9 +90,42 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnLeftClick(InputAction.CallbackContext value) {
+		if (value.started) {
+			// enable bullets
+		}
+
+		if (value.canceled) {
+			// diable bullets
+		}
 	}
 
 	public void OnRightClick(InputAction.CallbackContext value) {
+
+		if (value.started) {
+			StartCoroutine(MeleeAttack());
+		}
+	}
+
+	private IEnumerator MeleeAttack() {
+		oldState = state;
+		state = PlayerState.MELEE;
+
+		rigidBodyRef.velocity = Vector3.zero;
+
+		animRef.SetBool("Melee", true);
+
+		AnimatorStateInfo animState = animRef.GetCurrentAnimatorStateInfo(0);
+		while (!animState.IsName("BHJ_AttackCombo1")) {
+			animState = animRef.GetCurrentAnimatorStateInfo(0);
+			yield return new WaitForSeconds(0.1f);
+		}
+
+		yield return new WaitForSeconds(animState.length - animState.normalizedTime - 0.8f);
+
+		animRef.SetBool("Melee", false);
+		state = oldState;
+
+		yield return null;
 	}
 
 	public void OnDash(InputAction.CallbackContext value) {
