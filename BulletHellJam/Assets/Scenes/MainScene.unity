@@ -787,7 +787,7 @@ MonoBehaviour:
     bossActive: 0
   - name: Boss Wave 1
     batCount: 0
-    batRate: 0
+    batRate: 1
     powerBatCount: 0
     powerBatRate: 0
     bossActive: 1
@@ -807,7 +807,7 @@ MonoBehaviour:
     batCount: 0
     batRate: 0
     powerBatCount: 0
-    powerBatRate: 0
+    powerBatRate: 1
     bossActive: 1
   - name: Wave 5
     batCount: 1
@@ -823,9 +823,9 @@ MonoBehaviour:
     bossActive: 0
   - name: Boss Wave 3
     batCount: 0
-    batRate: 0
+    batRate: 2
     powerBatCount: 0
-    powerBatRate: 0
+    powerBatRate: 2
     bossActive: 1
   spawnPoints:
   - {fileID: 1558940955}

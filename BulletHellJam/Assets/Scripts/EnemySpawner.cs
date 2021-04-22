@@ -70,6 +70,16 @@ public class EnemySpawner : MonoBehaviour {
 
         state = SpawnState.WAITING;
 
+        if (wave.bossActive) {
+            if (wave.batRate != 0) {
+                StartCoroutine(SpawnBatSummons(wave));
+            }
+
+            if (wave.powerBatRate != 0) {
+                StartCoroutine(SpawnPowerBatSummons(wave));
+            }
+        }
+
         yield return null;
     }
 
@@ -83,6 +93,7 @@ public class EnemySpawner : MonoBehaviour {
         
         yield return null;
     }
+
     private IEnumerator SpawnPowerBats(Wave wave) {
         for (int i=0; i<wave.powerBatCount; i++) {
             SpawnEnemy(powerBatPrefab.transform);
@@ -90,6 +101,30 @@ public class EnemySpawner : MonoBehaviour {
         } 
 
         powerBatSpawningComplete = true;
+        
+        yield return null;
+    }
+
+    private IEnumerator SpawnBatSummons(Wave wave) {
+        while (bossController.GetState() == BossController.BossState.STAGE1 
+            || bossController.GetState() == BossController.BossState.STAGE2
+            || bossController.GetState() == BossController.BossState.STAGE3) {
+       
+            SpawnEnemy(batPrefab.transform);
+            yield return new WaitForSeconds(1f / wave.batRate);
+        }
+        
+        yield return null;
+    }
+
+    private IEnumerator SpawnPowerBatSummons(Wave wave) {
+        while (bossController.GetState() == BossController.BossState.STAGE1 
+            || bossController.GetState() == BossController.BossState.STAGE2
+            || bossController.GetState() == BossController.BossState.STAGE3) {
+       
+            SpawnEnemy(powerBatPrefab.transform);
+            yield return new WaitForSeconds(1f / wave.powerBatRate);
+        }
         
         yield return null;
     }
