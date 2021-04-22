@@ -28,20 +28,25 @@ public class PowerBatController : MonoBehaviour {
     }
 
     private void Start() {
-		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.25f, 0f, 0f)).x;
-		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.75f, 0f, 0f)).x;
+		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.01f, 0f, 0f)).x;
+		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.99f, 0f, 0f)).x;
 
-		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.25f, 0f)).y;
-		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.75f, 0f)).y;
+		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f, 0f)).y;
+		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.99f, 0f)).y;
 
         newPathTimer = newPathTime;
     }
 
     private void FixedUpdate() {
-        newPathTimer += Time.fixedDeltaTime;
+        Vector3 moveDir = targetPos - rigidbodyRef.transform.position;
+        Vector3 moveDist = moveDir.normalized * batSpeed * Time.fixedDeltaTime;
 
-        // every x seconds, path to a new random place within bounds
-        if (newPathTimer > newPathTime) {
+        if (moveDir.x > 0) rigidbodyRef.transform.rotation = Quaternion.Euler(0, 90f, 0f);
+        else rigidbodyRef.transform.rotation = Quaternion.Euler(0, -90f, 0f);
+
+        rigidbodyRef.MovePosition(rigidbodyRef.transform.position + moveDist);
+
+        if (newPathTimer > newPathTime || moveDir.magnitude < 0.5f) {
             // set a new destination
             targetPos = new Vector3(
                 Random.Range(LeftMoveBound, RightMoveBound),
@@ -49,19 +54,11 @@ public class PowerBatController : MonoBehaviour {
                 0f
                 );
 
+            print(targetPos);
+
             newPathTimer = 0f;
             newPathTime = Random.Range(newPathTimeMin, newPathTimeMax);
-        }
-
-        // move bat!
-        Vector3 moveDir = targetPos - rigidbodyRef.transform.position;
-        Vector3 moveDist = moveDir.normalized * batSpeed * Time.fixedDeltaTime;
-
-        if (rigidbodyRef.velocity.x > 0) rigidbodyRef.transform.rotation = Quaternion.Euler(0, 90f, 0f);
-        else rigidbodyRef.transform.rotation = Quaternion.Euler(0, -90f, 0f);
-
-        if (moveDir.magnitude > 3f) //rigidbodyRef.MovePosition(rigidbodyRef.transform.position + moveDist);
-            rigidbodyRef.AddForce(moveDist);
+        } newPathTimer += Time.fixedDeltaTime;
 
         if (state != BatState.FIGHTING) return;
 

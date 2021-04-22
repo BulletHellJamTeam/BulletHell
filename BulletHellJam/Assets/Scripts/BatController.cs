@@ -28,11 +28,11 @@ public class BatController : MonoBehaviour {
     }
 
     private void Start() {
-		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.25f, 0f, 0f)).x;
-		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.75f, 0f, 0f)).x;
+		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.01f, 0f, 0f)).x;
+		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.99f, 0f, 0f)).x;
 
-		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.25f, 0f)).y;
-		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.75f, 0f)).y;
+		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f, 0f)).y;
+		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.99f, 0f)).y;
 
         newPathTimer = newPathTime;
     }
