@@ -24,6 +24,7 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private Transform[] spawnPoints;
 
     private int nextWave = 0;
+    private int bossStage = 1;
     private float waveTime = 2.5f, waveTimer = 2.5f;
     private SpawnState state = SpawnState.COUNTING;
     private float searchTime = 1f, searchTimer = 0f;
@@ -59,6 +60,8 @@ public class EnemySpawner : MonoBehaviour {
 
         batSpawningComplete = false;
         powerBatSpawningComplete = false;
+
+        if (wave.bossActive) bossController.Enter(bossStage++);
 
         StartCoroutine(SpawnBats(wave));
         StartCoroutine(SpawnPowerBats(wave));

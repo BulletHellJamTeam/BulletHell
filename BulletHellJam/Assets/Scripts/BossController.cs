@@ -5,7 +5,7 @@ public class BossController : MonoBehaviour {
     public enum BossState { 
 		IDLE, DEAD,
 		STAGE1, STAGE2, STAGE3, 
-		DASHING, ENTERING, RETREATING
+		DASHING, RETREATING
 	};
 
 	private BossState state = BossState.IDLE;
@@ -16,6 +16,7 @@ public class BossController : MonoBehaviour {
 
 	// references
 	[SerializeField] private Animator animRef;
+	[SerializeField] private Transform idlePosition;
 	private Rigidbody rigidBodyRef;
 
 	// timers
@@ -25,7 +26,7 @@ public class BossController : MonoBehaviour {
     private float vertTimer = 0f;
 
 	// boundaries
-	float LeftMoveBound, RightMoveBound, BottomMoveBound, TopMoveBound;
+	float LeftMoveBound, RightMoveBound;
 
 	// movement data
 	private float bossSpeed = 3f, maxSpeed = 10f;
@@ -51,18 +52,26 @@ public class BossController : MonoBehaviour {
 		LeftMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.4f, 0f, 0f)).x;
 		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.95f, 0f, 0f)).x;
 
-		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
-		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0f)).y;
-
 		minDist = (RightMoveBound - LeftMoveBound) / 5f;
 
 		RandomizeTargetPosition();
 	}
 
 	private void FixedUpdate() {
-		if (state == BossState.IDLE) return;
+		if (state == BossState.IDLE) return; // if idle, do nothing
 
-		if (state != BossState.DASHING) {
+		if (state == BossState.RETREATING) {
+			rigidBodyRef.velocity = Vector3.zero;
+			rigidBodyRef.MovePosition(idlePosition.position);
+
+			state = BossState.IDLE;
+
+			return; 
+		}
+
+		if (state == BossState.STAGE1 || state == BossState.STAGE2 || state == BossState.STAGE3) {
+			if (state == BossState.DASHING) return;
+
 			Vector3 rawMovement = new Vector3(targetXPos - rigidBodyRef.transform.position.x, 0f, 0f);
 			Vector3 movement = rawMovement.normalized * bossSpeed;
 
@@ -151,13 +160,33 @@ public class BossController : MonoBehaviour {
 
 	public BossState GetState() { return state; }
 
+	public void Enter(int stage) {
+		if (stage == 1) {
+			state = BossState.STAGE1;
+			oldState = BossState.STAGE1;
+		} else if (stage == 2) {
+			state = BossState.STAGE2;
+			oldState = BossState.STAGE2;
+		} else if (stage == 3) {
+			state = BossState.STAGE3;
+			oldState = BossState.STAGE3;
+		}
+	}
+
     public void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("PlayerBullet")) {
 			PlayerBulletManager pbm = other.gameObject.GetComponent<PlayerBulletManager>();
 
-			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) health1 -= pbm.GetDamage();
-			if (state == BossState.STAGE2 || oldState == BossState.STAGE2) health2 -= pbm.GetDamage();
-			if (state == BossState.STAGE3 || oldState == BossState.STAGE3) health3 -= pbm.GetDamage();
+			float health = 0f;
+
+			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) { health1 -= pbm.GetDamage(); health = health1; }
+			if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { health2 -= pbm.GetDamage(); health = health2; }
+			if (state == BossState.STAGE3 || oldState == BossState.STAGE3) { health3 -= pbm.GetDamage(); health = health3; }
+
+			if (health3 < 0f) {
+				state = BossState.DEAD;
+				gameObject.SetActive(false);
+			} else if (health <= 0f) state = BossState.RETREATING;
 
             pbm.Destroy();
         }
