@@ -1,10 +1,22 @@
 using UnityEngine;
 
 public class BossController : MonoBehaviour {
+	// states
+    public enum BossState { 
+		IDLE, DEAD,
+		STAGE1, STAGE2, STAGE3, 
+		DASHING, ENTERING, RETREATING
+	};
+
+	private BossState state = BossState.IDLE;
+	private BossState oldState = BossState.IDLE;
+
+	// stats
+	private float health1 = 300f, health2 = 300f, health3 = 300f;
+
+	// references
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
-
-    public enum BossState { IDLE, ATTACKING, MOVING, DASHING, DEAD };
 
 	// timers
     private float horzTimeMin = 0.5f, horzTimeMax = 3f, horzTime = 0f;
@@ -29,10 +41,6 @@ public class BossController : MonoBehaviour {
 	private float dashSpeed = 50f, dashSpeedMin = 50f, dashSpeedMax = 100f;
 	private float dashTime = 0.05f, dashTimer = 0f;
 	private float dashEchoTime = 0.001f, dashEchoTimer = 0f;
-
-	// states
-	private BossState state = BossState.IDLE;
-	private BossState oldState = BossState.IDLE;
 
 	private void Awake() {
 		rigidBodyRef = GetComponent<Rigidbody>();
@@ -142,4 +150,16 @@ public class BossController : MonoBehaviour {
 	}
 
 	public BossState GetState() { return state; }
+
+    public void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("PlayerBullet")) {
+			PlayerBulletManager pbm = other.gameObject.GetComponent<PlayerBulletManager>();
+
+			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) health1 -= pbm.GetDamage();
+			if (state == BossState.STAGE2 || oldState == BossState.STAGE2) health2 -= pbm.GetDamage();
+			if (state == BossState.STAGE3 || oldState == BossState.STAGE3) health3 -= pbm.GetDamage();
+
+            pbm.Destroy();
+        }
+    }
 }

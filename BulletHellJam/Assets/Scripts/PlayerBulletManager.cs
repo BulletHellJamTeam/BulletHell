@@ -4,6 +4,7 @@ public class PlayerBulletManager : MonoBehaviour {
 	private static float bulletSpeed = 500f;
 
     [SerializeField] private GameObject explosion;
+    private float bulletDamage = 15f;
 
     public static GameObject Create(Vector3 pos, Vector3 target, GameObject bulletPrefab) {
 		Vector3 dir = (target - pos).normalized;
@@ -19,6 +20,8 @@ public class PlayerBulletManager : MonoBehaviour {
         return bullet;
     }
 
+    public float GetDamage() { return bulletDamage; }
+
     public void Destroy() {
         gameObject.SetActive(false);
 
@@ -27,6 +30,7 @@ public class PlayerBulletManager : MonoBehaviour {
         Destroy(expl, 0.2f);
         Destroy(gameObject, 0.2f);
     }
+
     public void Destroy(float timeTilDeath) {
         Invoke("Destroy", timeTilDeath);
     }

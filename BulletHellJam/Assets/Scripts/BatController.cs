@@ -76,12 +76,13 @@ public class BatController : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("PlayerBullet")) {
-            other.gameObject.GetComponent<PlayerBulletManager>().Destroy();
+			PlayerBulletManager pbm = other.gameObject.GetComponent<PlayerBulletManager>();
 
-            health -= 15f;
+            health -= pbm.GetDamage();
+
+            pbm.Destroy();
 
             if (health <= 0f) {
-
                 Destroy(gameObject);
             }
         }
