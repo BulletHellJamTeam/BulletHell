@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PowerBatController : MonoBehaviour {
@@ -16,6 +17,12 @@ public class PowerBatController : MonoBehaviour {
 
     // bounds
 	private float LeftMoveBound, RightMoveBound, BottomMoveBound, TopMoveBound;
+
+    // bullets
+	[SerializeField] private GameObject bulletPrefab;
+	[SerializeField] private GameObject[] attack1BulletSpawners = new GameObject[3];
+    private GameObject playerRef;
+    private float attack1Rate = 0.5f;
 
     // movement data
     private Rigidbody rigidbodyRef;
@@ -46,6 +53,8 @@ public class PowerBatController : MonoBehaviour {
 		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f, 0f)).y;
 		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.99f, 0f)).y;
 
+        playerRef = GameObject.Find("Player");
+
         newPathTimer = newPathTime;
     }
 
@@ -70,19 +79,30 @@ public class PowerBatController : MonoBehaviour {
             newPathTime = Random.Range(newPathTimeMin, newPathTimeMax);
         } newPathTimer += Time.fixedDeltaTime;
 
+        if (rigidbodyRef.transform.position.x < RightMoveBound) state = BatState.FIGHTING;
+
         if (state != BatState.FIGHTING) return;
 
-        // every y seconds use one of two different basic attacks
         if (attackTimer > attackTime) {
             // atk1 - fire three projectiles at player
+            StartCoroutine(Attack1());
             // atk2 - fire a circle of projectiles in all directions
-
-            print("attack");
 
             attackTimer = 0f;
             attackTime = Random.Range(attackTimeMin, attackTimeMax);
         } attackTimer += Time.fixedDeltaTime;
     }
+
+    private IEnumerator Attack1() {
+        for (int j=0; j<6; j++) {
+			for (int i=0; i<attack1BulletSpawners.Length; i++) {
+				if (attack1BulletSpawners[i].activeSelf) {
+                    if (playerRef != null) BatBulletManager.Create(attack1BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
+                }
+            } yield return new WaitForSeconds(attack1Rate); 
+        } yield return null;
+    }
+
 
     public void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("PlayerBullet")) {

@@ -1203,6 +1203,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animRef: {fileID: 8436847465050185897}
+  explosion: {fileID: 5824320942706098987, guid: 1314fafe14808ca429c4adc581c10d60, type: 3}
+  damageMaterial: {fileID: 2100000, guid: 73880f0e7d9c84048aa643ba126769ad, type: 2}
+  hair: {fileID: 7033225007796932820}
+  hair2: {fileID: 5964613165277066472}
+  body: {fileID: 3548402950957422430}
   bulletPrefab: {fileID: 3429405611371674853, guid: a71f6abc0a233bf48b1f4b9d4ebde16d, type: 3}
   bulletExplosion: {fileID: 5824320942706098987, guid: a0a1228d1306ed24d9e835d4b0e021c2, type: 3}
   Spirits:
@@ -1879,6 +1884,21 @@ PrefabInstance:
 --- !u!4 &8259335002366856748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f361a6fce50ba6048a15bf4e36688cb2, type: 3}
+  m_PrefabInstance: {fileID: 8436847465272682951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7033225007796932820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7742042969475450605, guid: f361a6fce50ba6048a15bf4e36688cb2, type: 3}
+  m_PrefabInstance: {fileID: 8436847465272682951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5964613165277066472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6353695050407437009, guid: f361a6fce50ba6048a15bf4e36688cb2, type: 3}
+  m_PrefabInstance: {fileID: 8436847465272682951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3548402950957422430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4311139193327157607, guid: f361a6fce50ba6048a15bf4e36688cb2, type: 3}
   m_PrefabInstance: {fileID: 8436847465272682951}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8778885391894090902 stripped

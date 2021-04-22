@@ -15,6 +15,13 @@ public class PlayerController : MonoBehaviour {
 
 	// references
 	[SerializeField] private Animator animRef;
+	[SerializeField] private GameObject explosion;
+    [SerializeField] private Material damageMaterial;
+    [SerializeField] private GameObject hair;
+    [SerializeField] private GameObject hair2;
+    [SerializeField] private GameObject body;
+    private Material originalHairMaterial;
+    private Material originalBodyMaterial;
 	private Rigidbody rigidBodyRef;
 
 	// bullet prefabs
@@ -22,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private GameObject bulletExplosion;
 	[SerializeField] private GameObject[] Spirits = new GameObject[5];
 	private float bulletTime = 0.1f, bulletTimer = 0f;
-	private float bulletSpeed = 500f;
 	private bool bulletsEnabled = false;
 
 	// movement
@@ -44,6 +50,9 @@ public class PlayerController : MonoBehaviour {
 
 	private void Awake() {
 		rigidBodyRef = gameObject.GetComponent<Rigidbody>();
+
+        originalHairMaterial = hair.GetComponent<SkinnedMeshRenderer>().material;
+        originalBodyMaterial = body.GetComponent<SkinnedMeshRenderer>().material;
 	}
 
 	private void FixedUpdate() {
@@ -176,6 +185,38 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Orb")) {
 			orbs++;
 			Destroy(other.gameObject);
-        }
+        } else if (other.gameObject.CompareTag("EnemyBullet")) {
+			BatBulletManager pbm = other.gameObject.GetComponent<BatBulletManager>();
+
+            health -= pbm.GetDamage();
+
+            pbm.Destroy();
+
+            if (health <= 0f) {
+                SelfDestruct();
+            } else {
+                body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+                hair.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+                hair2.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+                Invoke("ResetMaterial", 0.2f);
+            }
+		}
     }
+
+    private void ResetMaterial() {
+        body.GetComponent<SkinnedMeshRenderer>().material = originalBodyMaterial;
+        hair.GetComponent<SkinnedMeshRenderer>().material = originalHairMaterial;
+        hair2.GetComponent<SkinnedMeshRenderer>().material = originalHairMaterial;
+    }
+    
+    public void SelfDestruct() {
+        gameObject.SetActive(false);
+
+        GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
+
+        Destroy(exp, 0.5f);
+        Destroy(gameObject, 0.5f);
+    }
+
 }

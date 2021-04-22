@@ -774,10 +774,10 @@ MonoBehaviour:
   waveText: {fileID: 1831194987}
   waves:
   - name: Wave 1
-    batCount: 5
-    batRate: 5
-    powerBatCount: 5
-    powerBatRate: 5
+    batCount: 0
+    batRate: 0
+    powerBatCount: 2
+    powerBatRate: 1
     bossActive: 0
   - name: Wave 2
     batCount: 0
