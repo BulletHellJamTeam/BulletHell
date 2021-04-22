@@ -83,8 +83,12 @@ public class BatController : MonoBehaviour {
             pbm.Destroy();
 
             if (health <= 0f) {
-                Destroy(gameObject);
+                SelfDestruct();
             }
         }
+    }
+    
+    public void SelfDestruct() {
+        Destroy(gameObject);
     }
 }

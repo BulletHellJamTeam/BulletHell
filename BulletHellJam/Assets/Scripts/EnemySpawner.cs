@@ -115,6 +115,10 @@ public class EnemySpawner : MonoBehaviour {
             SpawnEnemy(batPrefab.transform);
             yield return new WaitForSeconds(1f / wave.batRate);
         }
+
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PowerBat")) {
+            obj.GetComponent<BatController>().SelfDestruct();
+        }
         
         yield return null;
     }
@@ -128,6 +132,10 @@ public class EnemySpawner : MonoBehaviour {
        
             SpawnEnemy(powerBatPrefab.transform);
             yield return new WaitForSeconds(1f / wave.powerBatRate);
+        }
+
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PowerBat")) {
+            obj.GetComponent<BatController>().SelfDestruct();
         }
         
         yield return null;
