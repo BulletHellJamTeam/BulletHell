@@ -6,22 +6,23 @@ public class BossController : MonoBehaviour {
 
     public enum BossState { IDLE, ATTACKING, MOVING };
 
+	// timers
     private float horzTimeMin = 0.5f, horzTimeMax = 3f, horzTime = 0f;
     private float horzTimer = 0f;
-    private float vertTimeMin = 0.2f, vertTimeMax = 1.5f, vertTime = 3f;
+    private float vertTimeMin = 2.5f, vertTimeMax = 4f, vertTime = 3f;
     private float vertTimer = 0f;
 
-	float targetXPos;
-
+	// boundaries
 	float LeftMoveBound, RightMoveBound, BottomMoveBound, TopMoveBound;
 
-	private float bossSpeed = 3f;
+	// movement data
+	private float bossSpeed = 3f, maxSpeed = 10f;
+	private float targetXPos;
+	private float minDist;
 
-	private float maxSpeed = 10f;
+	// slowdown data
+	private float slowdownTime = 1f, slowdownTimer = 0f;
 	private bool slowingDown = false;
-	private float slowdownDuration = 1f;
-	private float slowdownTimeElapsed = 0f;
-	private float min_dist;
 
 	private void Awake() {
 		rigidBodyRef = GetComponent<Rigidbody>();
@@ -35,7 +36,7 @@ public class BossController : MonoBehaviour {
 		BottomMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
 		TopMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0f)).y;
 
-		min_dist = (RightMoveBound - LeftMoveBound) / 5f;
+		minDist = (RightMoveBound - LeftMoveBound) / 5f;
 
 		RandomizeTargetPosition();
 	}
@@ -44,16 +45,16 @@ public class BossController : MonoBehaviour {
 		Vector3 rawMovement = new Vector3(targetXPos - rigidBodyRef.transform.position.x, 0f, 0f);
 		Vector3 movement = rawMovement.normalized * bossSpeed;
 
-		if (rawMovement.magnitude > min_dist && !slowingDown) { 
+		if (rawMovement.magnitude > minDist && !slowingDown) { 
 			rigidBodyRef.AddForce(movement);
 		} else {
 			slowingDown = true;
 
-			if (slowdownTimeElapsed < slowdownDuration) {
-				rigidBodyRef.velocity = Vector3.Lerp(rigidBodyRef.velocity, Vector3.zero, slowdownTimeElapsed / slowdownDuration);
-				slowdownTimeElapsed += Time.fixedDeltaTime;
+			if (slowdownTimer < slowdownTime) {
+				rigidBodyRef.velocity = Vector3.Lerp(rigidBodyRef.velocity, Vector3.zero, slowdownTimer / slowdownTime);
+				slowdownTimer += Time.fixedDeltaTime;
 			} else {
-				slowdownTimeElapsed = 0f;
+				slowdownTimer = 0f;
 			}
 		}
 
@@ -70,6 +71,8 @@ public class BossController : MonoBehaviour {
 
 			horzTimer = 0f;
 			horzTime = Random.Range(horzTimeMin, horzTimeMax);
+
+			slowdownTimer = 0f;
 		}
 
 		horzTimer += Time.fixedDeltaTime;
@@ -78,7 +81,7 @@ public class BossController : MonoBehaviour {
 	private void RandomizeTargetPosition() {
 		targetXPos = Random.Range(LeftMoveBound, RightMoveBound);
 
-		while (Mathf.Abs(targetXPos-rigidBodyRef.transform.position.x) < min_dist) {
+		while (Mathf.Abs(targetXPos-rigidBodyRef.transform.position.x) < minDist) {
 			targetXPos = Random.Range(LeftMoveBound, RightMoveBound);
 		} 
 	}
