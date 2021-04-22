@@ -4,7 +4,7 @@ public class BossController : MonoBehaviour {
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
 
-    public enum BossState { IDLE, ATTACKING, MOVING, DASHING };
+    public enum BossState { IDLE, ATTACKING, MOVING, DASHING, DEAD };
 
 	// timers
     private float horzTimeMin = 0.5f, horzTimeMax = 3f, horzTime = 0f;
@@ -31,8 +31,8 @@ public class BossController : MonoBehaviour {
 	private float dashEchoTime = 0.001f, dashEchoTimer = 0f;
 
 	// states
-	private BossState state = BossState.MOVING;
-	private BossState oldState = BossState.MOVING;
+	private BossState state = BossState.IDLE;
+	private BossState oldState = BossState.IDLE;
 
 	private void Awake() {
 		rigidBodyRef = GetComponent<Rigidbody>();
@@ -52,6 +52,8 @@ public class BossController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (state == BossState.IDLE) return;
+
 		if (state != BossState.DASHING) {
 			Vector3 rawMovement = new Vector3(targetXPos - rigidBodyRef.transform.position.x, 0f, 0f);
 			Vector3 movement = rawMovement.normalized * bossSpeed;
@@ -138,4 +140,6 @@ public class BossController : MonoBehaviour {
 			rigidBodyRef.velocity = Vector3.down * dashSpeed;
 		}
 	}
+
+	public BossState GetState() { return state; }
 }

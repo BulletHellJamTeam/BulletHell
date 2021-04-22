@@ -5,33 +5,43 @@ public class EnemySpawner : MonoBehaviour {
 
     public enum SpawnState { SPAWNING, WAITING, COUNTING, GAME_OVER };
 
+    [SerializeField] private GameObject batPrefab;
+    [SerializeField] private GameObject powerBatPrefab;
+    private bool batSpawningComplete = false, powerBatSpawningComplete = false;
+
     [System.Serializable]
     public class Wave {
         public string name;
-        public Transform enemy;
-        public int count;
-        public float rate;
+        public int batCount, powerBatCount;
+        public float batRate, powerBatRate;
+        public bool bossActive;
     }
 
     [SerializeField] private TMPro.TextMeshProUGUI waveText;
-
-    public Wave[] waves;
-    public Transform[] spawnPoints;
+    [SerializeField] private Wave[] waves;
+    [SerializeField] private Transform[] spawnPoints;
 
     private int nextWave = 0;
     private float waveTime = 2.5f, waveTimer = 2.5f;
     private SpawnState state = SpawnState.COUNTING;
-    private float searchCountdown = 1f;
+    private float searchTime = 1f, searchTimer = 0f;
+
+    private GameObject boss;
+    private BossController bossController;
+
+    private void Start() {
+        boss = GameObject.FindGameObjectWithTag("Boss");
+        bossController = boss.GetComponent<BossController>();
+    }
 
     private void Update() {
+        print(state);
+
         if (state == SpawnState.GAME_OVER) return;
 
         if (state == SpawnState.WAITING) {
-            if (!EnemyIsAlive()) {
-                WaveCompleted();
-            } else { 
-                return;
-            }
+            if (!EnemyIsAlive()) WaveCompleted();
+            else return;
         }
 
         if (waveTimer > waveTime) {
@@ -48,28 +58,55 @@ public class EnemySpawner : MonoBehaviour {
 
         waveText.text = wave.name;
 
-        for (int i=0; i<wave.count; i++) {
-            SpawnEnemy(wave.enemy);
-            yield return new WaitForSeconds(1f / wave.rate);
+        batSpawningComplete = false;
+        powerBatSpawningComplete = false;
+
+        StartCoroutine(SpawnBats(wave));
+        StartCoroutine(SpawnPowerBats(wave));
+
+        while (!batSpawningComplete && !powerBatSpawningComplete) yield return new WaitForSeconds(1f);
+
+        state = SpawnState.WAITING;
+
+        yield return null;
+    }
+
+    private IEnumerator SpawnBats(Wave wave) {
+        for (int i=0; i<wave.batCount; i++) {
+            SpawnEnemy(batPrefab.transform);
+            yield return new WaitForSeconds(1f / wave.batRate);
         }
 
-        yield break;
+        batSpawningComplete = true;
+        
+        yield return null;
+    }
+    private IEnumerator SpawnPowerBats(Wave wave) {
+        for (int i=0; i<wave.powerBatCount; i++) {
+            SpawnEnemy(powerBatPrefab.transform);
+            yield return new WaitForSeconds(1f / wave.powerBatRate);
+        } 
+
+        powerBatSpawningComplete = true;
+        
+        yield return null;
     }
 
     private bool EnemyIsAlive() {
-        searchCountdown -= Time.deltaTime;
-        if (searchCountdown <= 0f) {
-            searchCountdown = 1f;
-            if (GameObject.FindGameObjectWithTag("Bat") == null) {
-                return false;
-            }
-        } return true;
+        if (searchTimer > searchTime) {
+            searchTimer = 0f;
 
+            BossController.BossState bossState = bossController.GetState();
+            if (bossState != BossController.BossState.IDLE && bossState != BossController.BossState.DEAD) return false;
+
+            if (GameObject.FindGameObjectWithTag("Bat") == null) return false;
+            if (GameObject.FindGameObjectWithTag("PowerBat") == null) return false;
+        } searchTimer += Time.deltaTime;
+
+        return true;
     }
 
     private void WaveCompleted() {
-        print("wave completed");
-
         state = SpawnState.COUNTING;
         waveTimer = 0f;
 
