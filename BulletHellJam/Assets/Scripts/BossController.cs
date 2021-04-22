@@ -58,8 +58,7 @@ public class BossController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		print(state);
-		if (state == BossState.IDLE || state == BossState.DEAD) return; // if idle, do nothing
+		if (state == BossState.IDLE || state == BossState.DEAD) return; // if idle or dead, do nothing
 
 		if (state == BossState.RETREATING) {
 			rigidBodyRef.velocity = Vector3.zero;
@@ -178,18 +177,23 @@ public class BossController : MonoBehaviour {
         if (other.gameObject.CompareTag("PlayerBullet")) {
 			PlayerBulletManager pbm = other.gameObject.GetComponent<PlayerBulletManager>();
 
-			float health = 0f;
+			if (state == BossState.STAGE1) { 
+				health1 -= pbm.GetDamage();
 
-			if (state == BossState.STAGE1) { health1 -= pbm.GetDamage(); health = health1; }
-			if (state == BossState.STAGE2) { health2 -= pbm.GetDamage(); health = health2; }
-			if (state == BossState.STAGE3) { health3 -= pbm.GetDamage(); health = health3; }
+				if (health1 < 0f) state = BossState.RETREATING;
+			} else if (state == BossState.STAGE2) { 
+				health2 -= pbm.GetDamage();
 
-			print(health3);
+				if (health2 < 0f) state = BossState.RETREATING;
+			} else if (state == BossState.STAGE3) {
+				health3 -= pbm.GetDamage();
 
-			if (health3 < 0f) {
-				state = BossState.DEAD;
-				gameObject.SetActive(false);
-			} else if (health <= 0f) state = BossState.RETREATING;
+				if (health3 < 0f) {
+					state = BossState.DEAD;
+					gameObject.SetActive(false);
+				}
+
+			} else { return; } // dont take damage unless we're in a stage!
 
             pbm.Destroy();
         }
