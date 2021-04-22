@@ -13,6 +13,13 @@ public class PlayerController : MonoBehaviour {
 	private float health = 500;
 	private int orbs = 0;
 
+	// sound
+	[SerializeField] private AudioSource bulletSound;
+	[SerializeField] private AudioSource dashSound;
+	[SerializeField] private AudioSource hitSound;
+	[SerializeField] private AudioSource deathSound;
+	[SerializeField] private AudioSource orbSound;
+
 	// references
 	[SerializeField] private Animator animRef;
 	[SerializeField] private GameObject explosion;
@@ -101,6 +108,8 @@ public class PlayerController : MonoBehaviour {
 				Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
 				target = new Vector3(target.x, target.y, 0f);
 
+				bulletSound.Play();
+
 				for (int i=0; i<Spirits.Length; i++) {
 					if (Spirits[i].activeSelf) {
 						PlayerBulletManager.Create(Spirits[i].transform.position, target, bulletPrefab);
@@ -171,6 +180,8 @@ public class PlayerController : MonoBehaviour {
 
 		CameraShaker.Instance.ShakeOnce(2f, 2f, 0.1f, 0.5f);
 
+		dashSound.Play();
+
 		if (justDashed) {
 			rigidBodyRef.velocity = Vector3.left * dashSpeed;
 			justDashed = false;
@@ -184,6 +195,7 @@ public class PlayerController : MonoBehaviour {
     public void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Orb")) {
 			orbs++;
+			orbSound.Play();
 			Destroy(other.gameObject);
         } else if (other.gameObject.CompareTag("EnemyBullet")) {
 			BatBulletManager pbm = other.gameObject.GetComponent<BatBulletManager>();
@@ -200,6 +212,8 @@ public class PlayerController : MonoBehaviour {
                 hair2.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
 
                 Invoke("ResetMaterial", 0.2f);
+
+				hitSound.Play();
             }
 		} else if (other.gameObject.CompareTag("BossBullet")) {
 			BossBulletManager pbm = other.gameObject.GetComponent<BossBulletManager>();
@@ -216,6 +230,8 @@ public class PlayerController : MonoBehaviour {
                 hair2.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
 
                 Invoke("ResetMaterial", 0.2f);
+
+				hitSound.Play();
             }
 		}
     }
@@ -228,6 +244,8 @@ public class PlayerController : MonoBehaviour {
     
     public void SelfDestruct() {
         gameObject.SetActive(false);
+
+		deathSound.Play();
 
         GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 

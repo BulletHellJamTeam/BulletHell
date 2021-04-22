@@ -32,6 +32,8 @@ public class EnemySpawner : MonoBehaviour {
     private GameObject boss;
     private BossController bossController;
 
+    [SerializeField] private AudioManager amRef;
+
     private void Start() {
         boss = GameObject.FindGameObjectWithTag("Boss");
         bossController = boss.GetComponent<BossController>();
@@ -61,7 +63,12 @@ public class EnemySpawner : MonoBehaviour {
         batSpawningComplete = false;
         powerBatSpawningComplete = false;
 
-        if (wave.bossActive) bossController.Enter(bossStage++);
+        if (wave.bossActive) {
+            if (amRef.stage) amRef.PlayBoss();
+            bossController.Enter(bossStage++);
+        } else {
+            if (!amRef.stage) amRef.PlayStage();
+        }
 
         StartCoroutine(SpawnBats(wave));
         StartCoroutine(SpawnPowerBats(wave));

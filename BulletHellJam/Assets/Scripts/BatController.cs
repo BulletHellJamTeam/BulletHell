@@ -6,6 +6,11 @@ public class BatController : MonoBehaviour {
     public enum BatState { ENTERING, FIGHTING };
     BatState state = BatState.ENTERING;
 
+	// sound
+	[SerializeField] private AudioSource bulletSound;
+	[SerializeField] private AudioSource hitSound;
+	[SerializeField] private AudioSource deathSound;
+
     // stats
     float health = 100;
 
@@ -103,6 +108,8 @@ public class BatController : MonoBehaviour {
 
     private IEnumerator Attack1() {
         for (int j=0; j<6; j++) {
+            bulletSound.Play();
+
 			for (int i=0; i<attack1BulletSpawners.Length; i++) {
 				if (attack1BulletSpawners[i].activeSelf) {
                     if (playerRef != null)
@@ -138,6 +145,8 @@ public class BatController : MonoBehaviour {
                 wings.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
 
                 Invoke("ResetMaterial", 0.2f);
+
+                hitSound.Play();
             }
         }
     }
@@ -149,6 +158,8 @@ public class BatController : MonoBehaviour {
     
     public void SelfDestruct() {
         gameObject.SetActive(false);
+
+        deathSound.Play();
 
         DropOrbs(rigidbodyRef.transform.position, (int)Random.Range(5f, 10f), -0.25f, 0.25f, -0.25f, 0.25f);
 

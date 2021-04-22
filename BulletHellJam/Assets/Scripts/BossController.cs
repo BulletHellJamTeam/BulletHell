@@ -17,6 +17,11 @@ public class BossController : MonoBehaviour {
 	// stats
 	private float health1 = 1000f, health2 = 2000f, health3 = 3000f;
 
+	// sound
+	[SerializeField] private AudioSource bulletSound;
+	[SerializeField] private AudioSource hitSound;
+	[SerializeField] private AudioSource deathSound;
+
 	// references
 	[SerializeField] private Animator animRef;
 	[SerializeField] private Transform idlePosition;
@@ -214,6 +219,7 @@ public class BossController : MonoBehaviour {
 
     private IEnumerator Attack1() {
         for (int j=0; j<6; j++) {
+			bulletSound.Play();
 			for (int i=0; i<attack1BulletSpawners.Length; i++) {
 				if (attack1BulletSpawners[i].activeSelf) {
                     if (playerRef != null)
@@ -225,6 +231,7 @@ public class BossController : MonoBehaviour {
 
     private IEnumerator Attack2() {
         for (int j=0; j<6; j++) {
+			bulletSound.Play();
 			for (int i=0; i<attack2BulletSpawners.Length; i++) {
 				if (attack2BulletSpawners[i].activeSelf) {
                     if (playerRef != null)
@@ -256,6 +263,8 @@ public class BossController : MonoBehaviour {
 			if (state == BossState.STAGE1 || oldState == BossState.STAGE1) { 
 				health1 -= pbm.GetDamage();
 
+				hitSound.Play();
+				
 				if (health1 < 0f) {
 					state = BossState.RETREATING;
 
@@ -270,6 +279,8 @@ public class BossController : MonoBehaviour {
 					Invoke("ResetMaterial", 0.2f);
 				}
 			} else if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { 
+				hitSound.Play();
+				
 				health2 -= pbm.GetDamage();
 
 				if (health2 < 0f) {
@@ -292,6 +303,8 @@ public class BossController : MonoBehaviour {
 					state = BossState.DEAD;
 					gameObject.SetActive(false);
 
+					deathSound.Play();
+
 			        DropOrbs(rigidBodyRef.transform.position, (int)Random.Range(100f, 150f), -0.25f, 0.25f, -0.25f, 0.25f);
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
@@ -301,6 +314,8 @@ public class BossController : MonoBehaviour {
 					body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
 
 					Invoke("ResetMaterial", 0.2f);
+
+					hitSound.Play();
 				}
 			} else { return; } // dont take damage unless we're in a stage!
 
