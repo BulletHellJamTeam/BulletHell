@@ -100,8 +100,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnRightClick(InputAction.CallbackContext value) {
-
-		if (value.started) {
+		if (value.started && state != PlayerState.MELEE && state != PlayerState.DASHING) {
 			StartCoroutine(MeleeAttack());
 		}
 	}
@@ -129,7 +128,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnDash(InputAction.CallbackContext value) {
-		if (value.started && state != PlayerState.DASHING) Dash();
+		if (value.started && state != PlayerState.DASHING && state != PlayerState.MELEE) Dash();
 	}
 
 	private void Dash() {
