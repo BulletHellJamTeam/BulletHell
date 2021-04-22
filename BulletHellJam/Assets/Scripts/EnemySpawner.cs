@@ -115,6 +115,7 @@ public class EnemySpawner : MonoBehaviour {
 
         if (nextWave >= waves.Length) {
             state = SpawnState.GAME_OVER;
+            waveText.text = "All waves defeated";
         }
     }
 
