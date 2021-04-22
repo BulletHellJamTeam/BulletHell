@@ -126,7 +126,87 @@ ModelImporter:
   - first:
       74: 2667949614841947897
     second: Walk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye__eye_png
+    second: {fileID: 2100000, guid: 123471249886748499a3ab53fd054bf5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face__outfit2_psd_001
+    second: {fileID: 2100000, guid: cec543286e15eb34986b77bf84559e7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face__outfit_psd
+    second: {fileID: 2100000, guid: cec543286e15eb34986b77bf84559e7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gloves
+    second: {fileID: 2100000, guid: 4e827de99eb25744cbbdc22f8db3a64e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gloves__outfit2_psd_001
+    second: {fileID: 2100000, guid: 4e827de99eb25744cbbdc22f8db3a64e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gloves__outfit_psd_001
+    second: {fileID: 2100000, guid: 4e827de99eb25744cbbdc22f8db3a64e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair
+    second: {fileID: 2100000, guid: 56a87ecb43828584493d15002fb69aef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair__hairtex_jpg
+    second: {fileID: 2100000, guid: 56a87ecb43828584493d15002fb69aef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair__outfit_psd
+    second: {fileID: 2100000, guid: 56a87ecb43828584493d15002fb69aef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OutfitTrans
+    second: {fileID: 2100000, guid: 94f842c06eca44b49ad1fccc84d5b7ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outfit__outfit2_psd_001
+    second: {fileID: 2100000, guid: c00d097005990fd449bcf2436e382b9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outfit__outfit_psd_001
+    second: {fileID: 2100000, guid: c00d097005990fd449bcf2436e382b9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outfit__playerbody1_jpg
+    second: {fileID: 2100000, guid: c00d097005990fd449bcf2436e382b9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyebrow__hairtextv2_psd
+    second: {fileID: 2100000, guid: 5793de44ef68a644099e021dd4dc9594, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyebrow__outfit_psd
+    second: {fileID: 2100000, guid: 5793de44ef68a644099e021dd4dc9594, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyewhite__outfit_psd
+    second: {fileID: 2100000, guid: 71baf9f0297d705449edfd270655c594, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
