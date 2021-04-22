@@ -12,8 +12,10 @@ public class EnemySpawner : MonoBehaviour {
     [System.Serializable]
     public class Wave {
         public string name;
-        public int batCount, powerBatCount;
-        public float batRate, powerBatRate;
+        public int batCount;
+        public float batRate;
+        public int powerBatCount;
+        public float powerBatRate;
         public bool bossActive;
     }
 
@@ -35,13 +37,10 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void Update() {
-        print(state);
-
         if (state == SpawnState.GAME_OVER) return;
 
         if (state == SpawnState.WAITING) {
-            if (!EnemyIsAlive()) WaveCompleted();
-            else return;
+            if (WaveComplete()) WaveCompleted(); else return;
         }
 
         if (waveTimer > waveTime) {
@@ -92,18 +91,20 @@ public class EnemySpawner : MonoBehaviour {
         yield return null;
     }
 
-    private bool EnemyIsAlive() {
+    private bool WaveComplete() {
         if (searchTimer > searchTime) {
             searchTimer = 0f;
 
             BossController.BossState bossState = bossController.GetState();
             if (bossState != BossController.BossState.IDLE && bossState != BossController.BossState.DEAD) return false;
 
-            if (GameObject.FindGameObjectWithTag("Bat") == null) return false;
-            if (GameObject.FindGameObjectWithTag("PowerBat") == null) return false;
+            if (GameObject.FindGameObjectWithTag("Bat") != null) return false;
+            if (GameObject.FindGameObjectWithTag("PowerBat") != null) return false;
+
+            return true;
         } searchTimer += Time.deltaTime;
 
-        return true;
+        return false;
     }
 
     private void WaveCompleted() {
@@ -118,8 +119,6 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void SpawnEnemy(Transform enemy) {
-        print("spawning enemy: " + enemy.name);
-
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
         Instantiate(enemy, spawnPoint.position, Quaternion.identity);

@@ -774,57 +774,57 @@ MonoBehaviour:
   waves:
   - name: Wave 1
     batCount: 1
-    powerBatCount: 0
     batRate: 1
+    powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Wave 2
     batCount: 1
-    powerBatCount: 0
     batRate: 1
+    powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Boss Wave 1
     batCount: 0
-    powerBatCount: 1
     batRate: 0
+    powerBatCount: 1
     powerBatRate: 1
     bossActive: 1
   - name: Wave 3
     batCount: 1
-    powerBatCount: 0
     batRate: 1
+    powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Wave 4
     batCount: 1
-    powerBatCount: 0
     batRate: 1
+    powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Boss Wave 2
-    batCount: 1
-    powerBatCount: 0
-    batRate: 1
-    powerBatRate: 0
+    batCount: 0
+    batRate: 0
+    powerBatCount: 1
+    powerBatRate: 1
     bossActive: 1
   - name: Wave 5
-    batCount: 0
+    batCount: 1
+    batRate: 1
     powerBatCount: 0
-    batRate: 0
     powerBatRate: 0
     bossActive: 0
   - name: Wave 6
     batCount: 1
-    powerBatCount: 0
     batRate: 1
+    powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Boss Wave 3
-    batCount: 1
-    powerBatCount: 0
-    batRate: 1
-    powerBatRate: 0
+    batCount: 0
+    batRate: 0
+    powerBatCount: 1
+    powerBatRate: 1
     bossActive: 1
   spawnPoints:
   - {fileID: 1558940955}
