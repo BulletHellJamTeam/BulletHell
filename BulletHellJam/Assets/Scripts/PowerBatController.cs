@@ -57,7 +57,10 @@ public class PowerBatController : MonoBehaviour {
         Vector3 moveDir = targetPos - rigidbodyRef.transform.position;
         Vector3 moveDist = moveDir.normalized * batSpeed * Time.fixedDeltaTime;
 
-        if (moveDir.magnitude > 0.5f) //rigidbodyRef.MovePosition(rigidbodyRef.transform.position + moveDist);
+        if (rigidbodyRef.velocity.x > 0) rigidbodyRef.transform.rotation = Quaternion.Euler(0, 90f, 0f);
+        else rigidbodyRef.transform.rotation = Quaternion.Euler(0, -90f, 0f);
+
+        if (moveDir.magnitude > 3f) //rigidbodyRef.MovePosition(rigidbodyRef.transform.position + moveDist);
             rigidbodyRef.AddForce(moveDist);
 
         if (state != BatState.FIGHTING) return;

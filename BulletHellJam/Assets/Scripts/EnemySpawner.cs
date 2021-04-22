@@ -109,6 +109,7 @@ public class EnemySpawner : MonoBehaviour {
         while (bossController.GetState() == BossController.BossState.STAGE1 
             || bossController.GetState() == BossController.BossState.STAGE2
             || bossController.GetState() == BossController.BossState.STAGE3
+            || bossController.GetState() == BossController.BossState.DASHING
             || bossController.GetState() == BossController.BossState.ATTACK1
             || bossController.GetState() == BossController.BossState.ATTACK2) {
        
@@ -116,7 +117,7 @@ public class EnemySpawner : MonoBehaviour {
             yield return new WaitForSeconds(1f / wave.batRate);
         }
 
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PowerBat")) {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Bat")) {
             obj.GetComponent<BatController>().SelfDestruct();
         }
         
@@ -127,6 +128,7 @@ public class EnemySpawner : MonoBehaviour {
         while (bossController.GetState() == BossController.BossState.STAGE1 
             || bossController.GetState() == BossController.BossState.STAGE2
             || bossController.GetState() == BossController.BossState.STAGE3
+            || bossController.GetState() == BossController.BossState.DASHING
             || bossController.GetState() == BossController.BossState.ATTACK1
             || bossController.GetState() == BossController.BossState.ATTACK2) {
        
@@ -135,7 +137,7 @@ public class EnemySpawner : MonoBehaviour {
         }
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PowerBat")) {
-            obj.GetComponent<BatController>().SelfDestruct();
+            obj.GetComponent<PowerBatController>().SelfDestruct();
         }
         
         yield return null;
