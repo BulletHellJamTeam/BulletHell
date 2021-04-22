@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnRightClick(InputAction.CallbackContext value) {
+		if (bulletsEnabled) return;
+
 		if (value.started && state != PlayerState.MELEE && state != PlayerState.DASHING) {
 			StartCoroutine(MeleeAttack());
 		}
