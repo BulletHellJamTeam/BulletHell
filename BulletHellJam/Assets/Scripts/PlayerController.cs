@@ -6,32 +6,31 @@ using System.Collections;
 using UnityEditorInternal;
 
 public class PlayerController : MonoBehaviour {
+	// state
     public enum PlayerState { MOVING, DASHING, MELEE };
+	private PlayerState state = PlayerState.MOVING;
+	private PlayerState oldState = PlayerState.MOVING;
 
+	// references
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
 
-	private Vector2 rawInputMovement;
-	private Vector2 rawMousePosition;
+	// movement
+	private Vector2 rawInputMovement, rawMousePosition;
 	private float playerSpeed = 10f;
-
 	private float maxSpeed = 10f;
+
+	// slowdown
 	private float slowdownDuration = 0.5f;
 	private float slowdownTimeElapsed = 0f;
 
-	// dashing variables
+	// dashing
 	[SerializeField] private GameObject echoPrefab;
 	private float dashSpeed = 100f;
-	private float dashTime = 0.05f;
-	private float dashTimer = 0f;
-	private float dashBackTime = 2.5f;
-	private float dashBackTimer = 0f;
+	private float dashTime = 0.05f, dashTimer = 0f;
+	private float dashBackTime = 2.5f, dashBackTimer = 0f;
+	private float dashEchoTime = 0.001f, dashEchoTimer = 0f;
 	private bool justDashed = false;
-	private float dashEchoTime = 0.001f;
-	private float dashEchoTimer = 0f;
-
-	private PlayerState state = PlayerState.MOVING;
-	private PlayerState oldState = PlayerState.MOVING;
 
 	private void Awake() {
 		rigidBodyRef = gameObject.GetComponent<Rigidbody>();
