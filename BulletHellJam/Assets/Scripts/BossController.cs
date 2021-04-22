@@ -76,7 +76,6 @@ public class BossController : MonoBehaviour {
     		animRef.SetFloat("VelocityX", rigidBodyRef.velocity.x);
     		animRef.SetFloat("VelocityY", rigidBodyRef.velocity.y);
     
-    		/*
     		if (horzTimer > horzTime) {
     			slowingDown = false;
     			RandomizeTargetPosition();
@@ -86,7 +85,6 @@ public class BossController : MonoBehaviour {
     
     			slowdownTimer = 0f;
     		} horzTimer += Time.fixedDeltaTime;
-    		*/
 		
 			if (vertTimer > vertTime) {
 				Dash();
