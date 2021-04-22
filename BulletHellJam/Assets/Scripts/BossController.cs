@@ -20,6 +20,11 @@ public class BossController : MonoBehaviour {
 	[SerializeField] private Animator animRef;
 	[SerializeField] private Transform idlePosition;
 	[SerializeField] private GameObject explosion;
+    [SerializeField] private Material damageMaterial;
+    [SerializeField] private GameObject hair;
+    [SerializeField] private GameObject body;
+    private Material originalHairMaterial;
+    private Material originalBodyMaterial;
 	private Rigidbody rigidBodyRef;
 
 	// movement timers
@@ -56,6 +61,9 @@ public class BossController : MonoBehaviour {
 	private void Awake() {
 		rigidBodyRef = GetComponent<Rigidbody>();
 		targetXPos = rigidBodyRef.transform.position.x;
+
+        originalHairMaterial = hair.GetComponent<SkinnedMeshRenderer>().material;
+        originalBodyMaterial = body.GetComponent<SkinnedMeshRenderer>().material;
 	}
 
 	private void Start() {
@@ -264,6 +272,11 @@ public class BossController : MonoBehaviour {
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
+				} else {
+					hair.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+					body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+					Invoke("ResetMaterial", 0.2f);
 				}
 			} else if (state == BossState.STAGE2 || oldState == BossState.STAGE2) { 
 				health2 -= pbm.GetDamage();
@@ -273,6 +286,11 @@ public class BossController : MonoBehaviour {
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
+				} else {
+					hair.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+					body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+					Invoke("ResetMaterial", 0.2f);
 				}
 			} else if (state == BossState.STAGE3 || oldState == BossState.STAGE3) {
 				health3 -= pbm.GetDamage();
@@ -283,12 +301,20 @@ public class BossController : MonoBehaviour {
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
+				} else {
+					hair.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+					body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+					Invoke("ResetMaterial", 0.2f);
 				}
-
 			} else { return; } // dont take damage unless we're in a stage!
-
 
 		    pbm.Destroy();
 		}
+    }
+
+    private void ResetMaterial() {
+        hair.GetComponent<SkinnedMeshRenderer>().material = originalHairMaterial;
+        body.GetComponent<SkinnedMeshRenderer>().material = originalBodyMaterial;
     }
 }

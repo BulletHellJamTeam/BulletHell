@@ -774,10 +774,10 @@ MonoBehaviour:
   waveText: {fileID: 1831194987}
   waves:
   - name: Wave 1
-    batCount: 5
-    batRate: 5
-    powerBatCount: 5
-    powerBatRate: 5
+    batCount: 0
+    batRate: 0
+    powerBatCount: 0
+    powerBatRate: 0
     bossActive: 0
   - name: Wave 2
     batCount: 0
@@ -792,34 +792,34 @@ MonoBehaviour:
     powerBatRate: 0
     bossActive: 1
   - name: Wave 3
-    batCount: 1
-    batRate: 1
+    batCount: 0
+    batRate: 0
     powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Wave 4
     batCount: 0
     batRate: 0
-    powerBatCount: 1
-    powerBatRate: 1
+    powerBatCount: 0
+    powerBatRate: 0
     bossActive: 0
   - name: Boss Wave 2
     batCount: 0
     batRate: 0
     powerBatCount: 0
-    powerBatRate: 1
+    powerBatRate: 0
     bossActive: 1
   - name: Wave 5
-    batCount: 1
-    batRate: 1
+    batCount: 0
+    batRate: 0
     powerBatCount: 0
     powerBatRate: 0
     bossActive: 0
   - name: Wave 6
     batCount: 0
     batRate: 0
-    powerBatCount: 1
-    powerBatRate: 1
+    powerBatCount: 0
+    powerBatRate: 0
     bossActive: 0
   - name: Boss Wave 3
     batCount: 0

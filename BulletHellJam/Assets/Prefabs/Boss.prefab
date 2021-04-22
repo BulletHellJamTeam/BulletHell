@@ -188,6 +188,9 @@ MonoBehaviour:
   animRef: {fileID: 8183329895903831126}
   idlePosition: {fileID: 0}
   explosion: {fileID: 5824320942706098987, guid: 1314fafe14808ca429c4adc581c10d60, type: 3}
+  damageMaterial: {fileID: 2100000, guid: 73880f0e7d9c84048aa643ba126769ad, type: 2}
+  hair: {fileID: 6333739976827759027}
+  body: {fileID: 3579644948071008498}
   echoPrefab: {fileID: 5824320942706098987, guid: 062215ec69750364880fc673f01b5a02, type: 3}
 --- !u!54 &8183329895580476434
 Rigidbody:
@@ -823,5 +826,15 @@ GameObject:
 --- !u!4 &8510605187148399536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e25eabea153edd6478aaef45fe6cbd34, type: 3}
+  m_PrefabInstance: {fileID: 8183329895903831131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3579644948071008498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4594670854077027159, guid: e25eabea153edd6478aaef45fe6cbd34, type: 3}
+  m_PrefabInstance: {fileID: 8183329895903831131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6333739976827759027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6452266432751415832, guid: e25eabea153edd6478aaef45fe6cbd34, type: 3}
   m_PrefabInstance: {fileID: 8183329895903831131}
   m_PrefabAsset: {fileID: 0}
