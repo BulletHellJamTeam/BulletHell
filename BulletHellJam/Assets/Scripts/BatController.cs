@@ -46,8 +46,6 @@ public class BatController : MonoBehaviour {
                 0f
                 );
 
-            print(targetPos);
-
             newPathTimer = 0f;
             newPathTime = Random.Range(newPathTimeMin, newPathTimeMax);
         }
