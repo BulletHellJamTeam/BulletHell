@@ -137,23 +137,23 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private IEnumerator MeleeAttack() {
-		oldState = state;
-		state = PlayerState.MELEE;
+		// oldState = state;
+		// state = PlayerState.MELEE;
 
-		rigidBodyRef.velocity = Vector3.zero;
+		// rigidBodyRef.velocity = Vector3.zero;
 
-		animRef.SetBool("Melee", true);
+		// animRef.SetBool("Melee", true);
 
-		AnimatorStateInfo animState = animRef.GetCurrentAnimatorStateInfo(0);
-		while (!animState.IsName("BHJ_AttackCombo1")) {
-			animState = animRef.GetCurrentAnimatorStateInfo(0);
-			yield return new WaitForSeconds(0.1f);
-		}
+		// AnimatorStateInfo animState = animRef.GetCurrentAnimatorStateInfo(0);
+		// while (!animState.IsName("BHJ_AttackCombo1")) {
+		// 	animState = animRef.GetCurrentAnimatorStateInfo(0);
+		// 	yield return new WaitForSeconds(0.1f);
+		// }
 
-		yield return new WaitForSeconds(animState.length - animState.normalizedTime - 0.8f);
+		// yield return new WaitForSeconds(animState.length - animState.normalizedTime - 0.8f);
 
-		animRef.SetBool("Melee", false);
-		state = oldState;
+		// animRef.SetBool("Melee", false);
+		// state = oldState;
 
 		yield return null;
 	}
@@ -187,6 +187,22 @@ public class PlayerController : MonoBehaviour {
 			Destroy(other.gameObject);
         } else if (other.gameObject.CompareTag("EnemyBullet")) {
 			BatBulletManager pbm = other.gameObject.GetComponent<BatBulletManager>();
+
+            health -= pbm.GetDamage();
+
+            pbm.Destroy();
+
+            if (health <= 0f) {
+                SelfDestruct();
+            } else {
+                body.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+                hair.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+                hair2.GetComponent<SkinnedMeshRenderer>().material = damageMaterial;
+
+                Invoke("ResetMaterial", 0.2f);
+            }
+		} else if (other.gameObject.CompareTag("BossBullet")) {
+			BossBulletManager pbm = other.gameObject.GetComponent<BossBulletManager>();
 
             health -= pbm.GetDamage();
 

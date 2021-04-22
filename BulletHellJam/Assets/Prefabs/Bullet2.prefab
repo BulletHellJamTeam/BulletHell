@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5902090381999895293}
   - component: {fileID: 5902090381999895294}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bullet2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 5902090382331070955}
   - component: {fileID: 5902090382331070869}
   - component: {fileID: 5902090382331070868}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Aura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4895,9 +4895,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5902090383625552122}
-  m_Layer: 0
+  - component: {fileID: 7443174094770708220}
+  - component: {fileID: 3700172371800635157}
+  - component: {fileID: 8603995390456671938}
+  m_Layer: 10
   m_Name: Bullet2
-  m_TagString: Untagged
+  m_TagString: BossBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4919,6 +4922,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7443174094770708220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902090383625552121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabbe25873af4c24f979670eab084b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 5824320942706098987, guid: 062215ec69750364880fc673f01b5a02, type: 3}
+--- !u!54 &3700172371800635157
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902090383625552121}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
+--- !u!135 &8603995390456671938
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902090383625552121}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25780633
+  m_Center: {x: 0, y: -0.004986435, z: 0}
 --- !u!1 &5902090383762603797
 GameObject:
   m_ObjectHideFlags: 0
@@ -4930,7 +4975,7 @@ GameObject:
   - component: {fileID: 5902090383762603798}
   - component: {fileID: 5902090383762603792}
   - component: {fileID: 5902090383762603799}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Aura2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

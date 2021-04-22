@@ -90,11 +90,11 @@ public class BatController : MonoBehaviour {
 
         if (state != BatState.FIGHTING) return;
 
-        // every y seconds use one of two different basic attacks
         if (attackTimer > attackTime) {
-            //if (Random.Range(0f, 1f) > attack1Prob) StartCoroutine(Attack1());
+            //if (Random.Range(0f, 1f) > attack1Prob) 
+            StartCoroutine(Attack1());
             //else 
-            StartCoroutine(Attack2());
+            //StartCoroutine(Attack2());
 
             attackTimer = 0f;
             attackTime = Random.Range(attackTimeMin, attackTimeMax);

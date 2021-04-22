@@ -10,6 +10,7 @@ TagManager:
   - PowerBat
   - Orb
   - EnemyBullet
+  - BossBullet
   layers:
   - Default
   - TransparentFX

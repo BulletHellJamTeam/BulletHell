@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class BossController : MonoBehaviour {
 	private BossState oldState = BossState.IDLE;
 
 	// stats
-	private float health1 = 300f, health2 = 300f, health3 = 300f;
+	private float health1 = 1000f, health2 = 2000f, health3 = 3000f;
 
 	// references
 	[SerializeField] private Animator animRef;
@@ -42,6 +43,12 @@ public class BossController : MonoBehaviour {
     private float attack1DurationTime = 2f; private float attack1DurationTimer = 0f;
     private float attack2DurationTime = 3f; private float attack2DurationTimer = 0f;
 	private float attack1Prob = 0.7f;
+
+    // bullets
+	[SerializeField] private GameObject bulletPrefab;
+    private GameObject playerRef;
+	[SerializeField] private GameObject[] attack1BulletSpawners = new GameObject[3];
+	[SerializeField] private GameObject[] attack2BulletSpawners = new GameObject[5];
 
 	// boundaries
 	float LeftMoveBound, RightMoveBound;
@@ -74,6 +81,8 @@ public class BossController : MonoBehaviour {
 		RightMoveBound = Camera.main.ViewportToWorldPoint(new Vector3(0.95f, 0f, 0f)).x;
 
 		minDist = (RightMoveBound - LeftMoveBound) / 5f;
+
+        playerRef = GameObject.Find("Player");
 
 		RandomizeTargetPosition();
 	}
@@ -138,8 +147,8 @@ public class BossController : MonoBehaviour {
 					if (state == BossState.STAGE1) Attack1();
 					else if (state == BossState.STAGE2) Attack2();
 					else if (state == BossState.STAGE3) {
-						if (Random.Range(0f, 1f) > attack1Prob) Attack1();
-						else Attack2();
+						if (Random.Range(0f, 1f) > attack1Prob) StartAttack1();
+						else StartAttack2();
 					}
 				}
 
@@ -181,7 +190,7 @@ public class BossController : MonoBehaviour {
 			rigidBodyRef.velocity = Vector3.zero;
 
 			// perform attack pattern
-			// print("attack1");
+			StartCoroutine(Attack1());
 			
 			if (attack1DurationTimer > attack1DurationTime) {
 		    	state = oldState;
@@ -234,18 +243,46 @@ public class BossController : MonoBehaviour {
 		}
 	}
 
-	private void Attack1() {
+	private void StartAttack1() {
 		oldState = state;
 		state = BossState.ATTACK1;
-
-		// do attack stuff, like run a coroutine or something
 	}
 
-	private void Attack2() {
+    private IEnumerator Attack1() {
+		// do attack stuff, like run a coroutine or something
+        for (int j=0; j<6; j++) {
+			for (int i=0; i<attack1BulletSpawners.Length; i++) {
+				if (attack1BulletSpawners[i].activeSelf) {
+                    if (playerRef != null)
+					    BatBulletManager.Create(attack1BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
+                }
+            } yield return new WaitForSeconds(attack1DurationTime); 
+        }
+
+		state = oldState;
+		
+		yield return null;
+	}
+
+	private void StartAttack2() {
 		oldState = state;
 		state = BossState.ATTACK2;
+	}
 
+    private IEnumerator Attack2() {
 		// do attack stuff, like run a coroutine or something
+        for (int j=0; j<6; j++) {
+			for (int i=0; i<attack2BulletSpawners.Length; i++) {
+				if (attack2BulletSpawners[i].activeSelf) {
+                    if (playerRef != null)
+					    BatBulletManager.Create(attack2BulletSpawners[i].transform.position, playerRef.transform.position, bulletPrefab);
+                }
+            } yield return new WaitForSeconds(attack2DurationTime); 
+        }
+
+		state = oldState;
+		
+		yield return null;
 	}
 
 	public BossState GetState() { return state; }

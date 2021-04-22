@@ -14,6 +14,8 @@ public class OrbController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (playerRef == null) return;
+
 		Vector3 dist = playerRef.transform.position - rigidbodyRef.transform.position;
 
 		if (dist.magnitude < 3f) {

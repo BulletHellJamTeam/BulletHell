@@ -84,9 +84,10 @@ public class PowerBatController : MonoBehaviour {
         if (state != BatState.FIGHTING) return;
 
         if (attackTimer > attackTime) {
-            // atk1 - fire three projectiles at player
+            //if (Random.Range(0f, 1f) > attack1Prob) 
             StartCoroutine(Attack1());
-            // atk2 - fire a circle of projectiles in all directions
+            //else 
+            //StartCoroutine(Attack2());
 
             attackTimer = 0f;
             attackTime = Random.Range(attackTimeMin, attackTimeMax);

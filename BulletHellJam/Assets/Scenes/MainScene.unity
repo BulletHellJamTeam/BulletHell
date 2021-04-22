@@ -776,8 +776,8 @@ MonoBehaviour:
   - name: Wave 1
     batCount: 0
     batRate: 0
-    powerBatCount: 2
-    powerBatRate: 1
+    powerBatCount: 0
+    powerBatRate: 0
     bossActive: 0
   - name: Wave 2
     batCount: 0
