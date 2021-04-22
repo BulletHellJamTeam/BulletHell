@@ -50,6 +50,7 @@ MonoBehaviour:
   damageMaterial: {fileID: 2100000, guid: 73880f0e7d9c84048aa643ba126769ad, type: 2}
   body: {fileID: 1641355239003426353}
   wings: {fileID: 3817139249580920185}
+  orbPrefab: {fileID: 432233481622213366, guid: b3dbd0437cd55824d8f2401f5be21a0b, type: 3}
 --- !u!65 &4669177882173289599
 BoxCollider:
   m_ObjectHideFlags: 0

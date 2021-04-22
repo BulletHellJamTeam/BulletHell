@@ -27,6 +27,9 @@ public class BossController : MonoBehaviour {
     private Material originalBodyMaterial;
 	private Rigidbody rigidBodyRef;
 
+    // orbs
+    [SerializeField] private GameObject orbPrefab;
+
 	// movement timers
     private float horzTimeMin = 0.5f, horzTimeMax = 3f, horzTime = 0f;
     private float horzTimer = 0f;
@@ -270,6 +273,8 @@ public class BossController : MonoBehaviour {
 				if (health1 < 0f) {
 					state = BossState.RETREATING;
 
+			        DropOrbs(rigidBodyRef.transform.position, (int)Random.Range(100f, 150f), -1f, 1f, -1f, 1f);
+
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
 				} else {
@@ -283,6 +288,8 @@ public class BossController : MonoBehaviour {
 
 				if (health2 < 0f) {
 					state = BossState.RETREATING;
+
+			        DropOrbs(rigidBodyRef.transform.position, (int)Random.Range(100f, 150f), -1f, 1f, -1f, 1f);
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
@@ -298,6 +305,8 @@ public class BossController : MonoBehaviour {
 				if (health3 < 0f) {
 					state = BossState.DEAD;
 					gameObject.SetActive(false);
+
+			        DropOrbs(rigidBodyRef.transform.position, (int)Random.Range(100f, 150f), -0.25f, 0.25f, -0.25f, 0.25f);
 
 					GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 					Destroy(exp, 0.5f);
@@ -317,4 +326,11 @@ public class BossController : MonoBehaviour {
         hair.GetComponent<SkinnedMeshRenderer>().material = originalHairMaterial;
         body.GetComponent<SkinnedMeshRenderer>().material = originalBodyMaterial;
     }
+
+	public void DropOrbs(Vector3 loc, int numOrbs, float minX, float maxX, float minY, float maxY) {
+		for (int i=0; i<numOrbs; i++) {
+			Vector3 pos = new Vector3(loc.x + Random.Range(minX, maxX), loc.y + Random.Range(minY, maxY), 0f);
+			Instantiate(orbPrefab, pos, Quaternion.identity);
+		}
+	}
 }

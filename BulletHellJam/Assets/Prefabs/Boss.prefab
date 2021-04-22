@@ -191,6 +191,7 @@ MonoBehaviour:
   damageMaterial: {fileID: 2100000, guid: 73880f0e7d9c84048aa643ba126769ad, type: 2}
   hair: {fileID: 6333739976827759027}
   body: {fileID: 3579644948071008498}
+  orbPrefab: {fileID: 432233481622213366, guid: b3dbd0437cd55824d8f2401f5be21a0b, type: 3}
   echoPrefab: {fileID: 5824320942706098987, guid: 062215ec69750364880fc673f01b5a02, type: 3}
 --- !u!54 &8183329895580476434
 Rigidbody:

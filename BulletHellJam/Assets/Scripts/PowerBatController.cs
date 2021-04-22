@@ -29,6 +29,9 @@ public class PowerBatController : MonoBehaviour {
     [SerializeField] private GameObject wings;
     private Material originalMaterial;
 
+    // orbs
+    [SerializeField] private GameObject orbPrefab;
+
     private void Awake() {
         rigidbodyRef = GetComponent<Rigidbody>();
         targetPos = rigidbodyRef.transform.position;
@@ -62,8 +65,6 @@ public class PowerBatController : MonoBehaviour {
                 Random.Range(BottomMoveBound, TopMoveBound),
                 0f
                 );
-
-            print(targetPos);
 
             newPathTimer = 0f;
             newPathTime = Random.Range(newPathTimeMin, newPathTimeMax);
@@ -110,9 +111,18 @@ public class PowerBatController : MonoBehaviour {
     public void SelfDestruct() {
         gameObject.SetActive(false);
 
+        DropOrbs(rigidbodyRef.transform.position, (int)Random.Range(15f, 30f), -0.25f, 0.25f, -0.25f, 0.25f);
+
         GameObject exp = Instantiate(explosion, transform.position, Quaternion.identity);
 
         Destroy(exp, 0.5f);
         Destroy(gameObject, 0.5f);
     }
+
+	public void DropOrbs(Vector3 loc, int numOrbs, float minX, float maxX, float minY, float maxY) {
+		for (int i=0; i<numOrbs; i++) {
+			Vector3 pos = new Vector3(loc.x + Random.Range(minX, maxX), loc.y + Random.Range(minY, maxY), 0f);
+			Instantiate(orbPrefab, pos, Quaternion.identity);
+		}
+	}
 }

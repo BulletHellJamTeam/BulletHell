@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour {
 	private PlayerState state = PlayerState.MOVING;
 	private PlayerState oldState = PlayerState.MOVING;
 
+	// stats
+	private float health = 500;
+	private int orbs = 0;
+
 	// references
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
@@ -167,4 +171,11 @@ public class PlayerController : MonoBehaviour {
 			justDashed = true;
 		}
 	}
+
+    public void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Orb")) {
+			orbs++;
+			Destroy(other.gameObject);
+        }
+    }
 }
