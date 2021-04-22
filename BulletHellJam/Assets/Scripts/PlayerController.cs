@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using EZCameraShake;
-using TMPro;
 using System.Collections;
-using UnityEditorInternal;
 
 public class PlayerController : MonoBehaviour {
 	// state
@@ -14,6 +12,14 @@ public class PlayerController : MonoBehaviour {
 	// references
 	[SerializeField] private Animator animRef;
 	private Rigidbody rigidBodyRef;
+
+	// bullet prefabs
+	[SerializeField] private GameObject bulletPrefab;
+	[SerializeField] private GameObject bulletExplosion;
+	[SerializeField] private GameObject[] Spirits = new GameObject[5];
+	private float bulletTime = 0.25f, bulletTimer = 0f;
+	private float bulletSpeed = 500f;
+	private bool bulletsEnabled = false;
 
 	// movement
 	private Vector2 rawInputMovement, rawMousePosition;
@@ -76,6 +82,28 @@ public class PlayerController : MonoBehaviour {
 			if (dashBackTimer > dashBackTime) justDashed = false;
 		}
 
+		// dont even look at this mess god how the hell does linear algebra even work
+		if (bulletsEnabled) {
+			if (bulletTimer > bulletTime) {
+				Vector3 mousePosition = new Vector3(rawMousePosition.x, rawMousePosition.y, 0f);
+				Vector3 target = Camera.main.ScreenToWorldPoint(mousePosition);
+				target = new Vector3(target.x, target.y, 0f);
+
+				for (int i=0; i<Spirits.Length; i++) {
+					if (Spirits[i].activeSelf) {
+						Vector3 bulletPos = Spirits[i].transform.position;
+						Vector3 dir = (target - bulletPos).normalized;
+
+						Quaternion lookDir = Quaternion.LookRotation(Vector3.Cross(dir, Vector3.up), Vector3.Cross(dir, -Vector3.forward));
+
+						GameObject bullet = Instantiate(bulletPrefab, bulletPos, lookDir);
+
+						bullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed * Time.fixedDeltaTime;
+                    }
+                } bulletTimer = 0f;
+            } bulletTimer += Time.fixedDeltaTime;
+        }
+
 		animRef.SetFloat("VelocityX", rigidBodyRef.velocity.x);
 		animRef.SetFloat("VelocityY", rigidBodyRef.velocity.y);
 	}
@@ -89,13 +117,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void OnLeftClick(InputAction.CallbackContext value) {
-		if (value.started) {
-			// enable bullets
-		}
+		if (state == PlayerState.MELEE) return;
 
-		if (value.canceled) {
-			// diable bullets
-		}
+		if (value.started) bulletsEnabled = true;
+		if (value.canceled) bulletsEnabled = false;
 	}
 
 	public void OnRightClick(InputAction.CallbackContext value) {

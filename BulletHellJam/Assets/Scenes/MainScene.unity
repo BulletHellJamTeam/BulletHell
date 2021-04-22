@@ -2032,6 +2032,10 @@ PrefabInstance:
       value: 0.122802734
       objectReference: {fileID: 0}
     - target: {fileID: 8436847465421077410, guid: 5a0164318eae5354298aa372c6eb0c42, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 3429405611371674853, guid: a71f6abc0a233bf48b1f4b9d4ebde16d, type: 3}
+    - target: {fileID: 8436847465421077410, guid: 5a0164318eae5354298aa372c6eb0c42, type: 3}
       propertyPath: echoPrefab
       value: 
       objectReference: {fileID: 5824320942706098987, guid: a0a1228d1306ed24d9e835d4b0e021c2, type: 3}
