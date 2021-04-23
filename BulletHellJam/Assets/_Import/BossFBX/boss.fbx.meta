@@ -144,7 +144,57 @@ ModelImporter:
   - first:
       74: 2667949614841947897
     second: Walk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye__eye2_png
+    second: {fileID: 2100000, guid: 7a9bc3fe2b4c2614aa531f12cab801c7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face__outfit2_psd_001
+    second: {fileID: 2100000, guid: 8bfc41049ac5ea241a70d2f0bbc4018c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face__outfit_psd
+    second: {fileID: 2100000, guid: 8bfc41049ac5ea241a70d2f0bbc4018c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair
+    second: {fileID: 2100000, guid: d86d2269c227ff04094d512222a7c53c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair__outfit2_psd_001
+    second: {fileID: 2100000, guid: d86d2269c227ff04094d512222a7c53c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair__outfit_psd
+    second: {fileID: 2100000, guid: d86d2269c227ff04094d512222a7c53c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hair__outfit_psd_001
+    second: {fileID: 2100000, guid: d86d2269c227ff04094d512222a7c53c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outfit__outfit2_psd_001
+    second: {fileID: 2100000, guid: ed25fe67af2666b4eb82bc6fe03d6e05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outfit__outfit_psd_001
+    second: {fileID: 2100000, guid: ed25fe67af2666b4eb82bc6fe03d6e05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyebrow__hairtextv2_psd
+    second: {fileID: 2100000, guid: d86d2269c227ff04094d512222a7c53c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
